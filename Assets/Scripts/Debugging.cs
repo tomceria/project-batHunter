@@ -20,7 +20,7 @@ public class Debugging : MonoBehaviour {
 	// Update is called once per frame
 	void Update () {
 		Player player = GameObject.Find("Player").GetComponent<Player>();				//Get Player.userInfo
-		DebuggingText.text = ("project-airfighter" +
+		DebuggingText.text = ("project-batHunter" +
 		"\nby Luu Minh Hoang" +
 		"\nX: " + Player.playerPositionX + 
 		"\nY: " + Player.playerPositionY +

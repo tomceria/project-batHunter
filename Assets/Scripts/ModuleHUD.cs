@@ -15,7 +15,7 @@ public class ModuleHUD : MonoBehaviour {
 	// Update is called once per frame
 	void Update () {
 		Player player = GameObject.Find("Player").GetComponent<Player>();				//Get Player.userInfo
-		selfbar.fillAmount = 1 - (player.userInfo.heat / player.userInfo.heatMax);
+		selfbar.fillAmount = (player.userInfo.heat / player.userInfo.heatMax);
 	
 	}
 }

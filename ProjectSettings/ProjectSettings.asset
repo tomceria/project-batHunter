@@ -12,13 +12,13 @@ PlayerSettings:
   targetDevice: 2
   useOnDemandResources: 0
   accelerometerFrequency: 60
-  companyName: CeriaGames
-  productName: Skyhedge
+  companyName: CERIA Games
+  productName: Harp
   defaultCursor: {fileID: 0}
   cursorHotspot: {x: 0, y: 0}
   m_SplashScreenBackgroundColor: {r: 0, g: 0, b: 0, a: 1}
   m_ShowUnitySplashScreen: 1
-  m_ShowUnitySplashLogo: 0
+  m_ShowUnitySplashLogo: 1
   m_SplashScreenOverlayOpacity: 1
   m_SplashScreenAnimation: 0
   m_SplashScreenLogoStyle: 1
@@ -40,7 +40,7 @@ PlayerSettings:
     width: 1
     height: 1
   m_SplashScreenLogos:
-  - logo: {fileID: 21300000, guid: 587444b4f3e674ce9a9f9801899f55de, type: 3}
+  - logo: {fileID: 10404, guid: 0000000000000000e000000000000000, type: 0}
     duration: 2
   m_VirtualRealitySplashScreen: {fileID: 0}
   m_HolographicTrackingLossScreen: {fileID: 0}
@@ -157,10 +157,10 @@ PlayerSettings:
     Android: com.ceriagames.barelysky
     Standalone: unity.DefaultCompany.project-airfighter
     Tizen: com.Company.ProductName
-    iOS: com.ceriagames.skyhedge
+    iOS: com.ceriagames.harp
     tvOS: com.Company.ProductName
   buildNumber:
-    iOS: 20180710
+    iOS: 20181005
   AndroidBundleVersionCode: 1
   AndroidMinSdkVersion: 16
   AndroidTargetSdkVersion: 0
