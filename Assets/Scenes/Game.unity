@@ -1389,11 +1389,6 @@ Prefab:
       propertyPath: m_RootOrder
       value: 2
       objectReference: {fileID: 0}
-    - target: {fileID: 114920434627175014, guid: e19dd17de855f407c98c7399a18c9145,
-        type: 2}
-      propertyPath: thecamera
-      value: 
-      objectReference: {fileID: 2116542444}
     - target: {fileID: 114414232879510632, guid: e19dd17de855f407c98c7399a18c9145,
         type: 2}
       propertyPath: thecamera
@@ -1411,9 +1406,9 @@ Prefab:
       objectReference: {fileID: 1865202966}
     - target: {fileID: 114920434627175014, guid: e19dd17de855f407c98c7399a18c9145,
         type: 2}
-      propertyPath: playerObj
+      propertyPath: thecamera
       value: 
-      objectReference: {fileID: 1585663865}
+      objectReference: {fileID: 2116542444}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: e19dd17de855f407c98c7399a18c9145, type: 2}
   m_IsPrefabAsset: 0

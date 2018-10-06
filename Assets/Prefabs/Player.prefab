@@ -61,7 +61,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!1 &1914075269768562
 GameObject:
   m_ObjectHideFlags: 1
@@ -72,7 +72,7 @@ GameObject:
   - component: {fileID: 4359349401264182}
   - component: {fileID: 212859580009001298}
   m_Layer: 0
-  m_Name: Ship Body
+  m_Name: Main Sprite
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -389,7 +389,7 @@ SpriteRenderer:
   m_SortingLayerID: 0
   m_SortingLayer: 0
   m_SortingOrder: 0
-  m_Sprite: {fileID: 21300000, guid: 1cfe93c10c900c440a6c4e5efd7e5744, type: 3}
+  m_Sprite: {fileID: 21300000, guid: 8f03c893a652848e0ad32143d6f6770c, type: 3}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
   m_FlipX: 0
   m_FlipY: 0
