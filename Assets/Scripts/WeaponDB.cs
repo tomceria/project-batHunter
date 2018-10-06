@@ -60,9 +60,9 @@ public class WeaponDB : MonoBehaviour {
 				baseType = 0;
 				basePowerFROM = 3;						basePowerTO = 10;
 				baseProjectileFROM = 1;					baseProjectileTO = 5;
-				baseDelayMaxFROM = 15;					baseDelayMaxTO = 13;
-				baseHeatDesFROM = 10;					baseHeatDesTO = 6;
-				baseHeatAccelBaseFROM = 0.25f;			baseHeatAccelBaseTO = 0.1f;
+				baseDelayMaxFROM = 20;					baseDelayMaxTO = 10;
+				baseHeatDesFROM = 10;					baseHeatDesTO = 7.5f;
+				baseHeatAccelBaseFROM = 0.2f;			baseHeatAccelBaseTO = 0.1f;
 				break;
 			case 2:				// Laser beam
 				baseType = 0;
@@ -104,11 +104,13 @@ public class WeaponDB : MonoBehaviour {
 		int facedown = (userInfo.type == 2)?1:0;			// Face downward if user is an enemy
 		Vector3 zDepth = new Vector3 (0, 0, -1);			// In 3D space, projectile stay on top of player and enemies in order to reflect light
 
+		// Card behaviour (TODO: Card properties (sprite, etc.) separately)
 		switch (userInfo.inventory[slotID].id) {
 			case 1: {				// Stick-projectile shoot in cone shape
-				for (var i = (userInfo.inventory[slotID].projectile)*-1; i <= userInfo.inventory[slotID].projectile; i++) {
+				int bulletAngel = 5;
+				for (var i = 0; i <= (userInfo.inventory[slotID].projectile-1)*2; i++) {
 					GameObject Bullet = Instantiate(projectile, user.transform.position + userInfo.barrelPos + zDepth, Quaternion.identity) as GameObject;
-					Bullet.transform.rotation = Quaternion.Euler(0, 0, user.transform.rotation.z + 5*i + facedown*180);
+					Bullet.transform.rotation = Quaternion.Euler(0, 0, user.transform.rotation.z - (userInfo.inventory[slotID].projectile - 1)*bulletAngel + bulletAngel*i + facedown*180);
 					Projectile bulletComponent = Bullet.GetComponent<Projectile>();			// Get Projectile.cs component
 					bulletComponent.damage = userInfo.inventory[slotID].power;				// Transfer damage/power data into Projectile.cs
 					bulletComponent.userType = userInfo.type;				// Transfer user type into Projectile.cs

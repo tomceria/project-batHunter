@@ -27,6 +27,7 @@ public class EnemySpawner : MonoBehaviour {
 		EnemySpawner enemyspawner = GameObject.Find("GameMaster").GetComponent<EnemySpawner>();
 		GameObject enemy = Instantiate (enemyspawner.EnemyObj, ogPos, Quaternion.identity);
 		Enemy EnemyComponent = enemy.GetComponent<Enemy>();
+		EnemyComponent.enemyID = enemyID;				// Send "enemyID" over to "enemy" object => Determine enemy properties
 		EnemyComponent.enemyBatch = batchID;			// Send "batchID" over to "enemy" object => Move patterns
 		EnemyComponent.enemyMod = mod;					// Send "mod" (float array) over to "enemy" object => Enemy Batch initial modifications
 	}

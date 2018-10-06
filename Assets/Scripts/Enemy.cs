@@ -8,6 +8,7 @@ public class Enemy : MonoBehaviour {
 
 	private float DEMOshootTimer = 0;
 	public float screenEdge = 4.5f;
+	public int enemyID;
 	public int enemyBatch;
 	public float[] enemyMod = new float[10];		//Value determined by EnemySpawner to change batch's behaviour
 	public float[] enemyVar = new float[10];			//Value changing throughout the process for batch's functions
@@ -15,17 +16,34 @@ public class Enemy : MonoBehaviour {
 	// Use this for initialization
 	void Start () {
 		//TEMPORARY
-		userInfo.inventory = new WeaponDB.weapon[20];				//Initiating Player's card inventory
-		WeaponDB.getCard(1, ref userInfo, 1, 1);
-		userInfo.type = 2;
+		
+
+		// Enemy properties
+		switch (enemyID) {
+			case 0: {				// Test Enemy
+				userInfo.inventory = new WeaponDB.weapon[20];				//Initiating Player's card inventory
+				WeaponDB.getCard(1, ref userInfo, 1, 1);
+				userInfo.type = 2;
+				userInfo.hp = 10f;
+				userInfo.barrelPos = new Vector3 (0, -0.2f, 0);
+				break;
+			}
+			case 1: {				// Test Enemy 2
+				userInfo.inventory = new WeaponDB.weapon[20];				//Initiating Player's card inventory
+				WeaponDB.getCard(3, ref userInfo, 1, 8);
+				userInfo.type = 2;
+				userInfo.hp = 10f;
+				userInfo.barrelPos = new Vector3 (0, -0.2f, 0);
+				break;
+			}
+		}
 		gameObject.tag = "Enemy";
-		userInfo.hp = 10f;
 		userInfo.currentCard = 1;
 		userInfo.heatMax = 100;
 		userInfo.heat = userInfo.heatMax;
-		userInfo.barrelPos = new Vector3 (0, -0.2f, 0);
+		//
 
-		// Enemy movement (Startup)
+		// Enemy movement variable (Startup)
 		switch (enemyBatch) {
 			// Sin-Wave:
 			case 21:

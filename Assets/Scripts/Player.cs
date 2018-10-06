@@ -57,12 +57,14 @@ public class Player : MonoBehaviour {
 
         //PROJECTILE FIRING (HOLDING)
 		if (firingState == 1) {
-			if (userInfo.inventory[userInfo.currentCard].delay <= 0 && userInfo.overheatState == 0) {
+			if (userInfo.inventory[userInfo.currentCard].delay <= 0 && userInfo.overheatState == 0 && userInfo.heat > userInfo.inventory[userInfo.currentCard].heatDes) {
 				WeaponDB weaponDB = GameObject.Find("GameMaster").GetComponent<WeaponDB>();			//get components from the "WeaponDB" script in the GameObject "GameMaster"
 				weaponDB.useCard (ref userInfo, userInfo.currentCard, gameObject);
 				//WEAPON OVERHEAT TRIGGER
-				if (userInfo.heat < 0)
-					WeaponOverheated ();
+				if (userInfo.heat < 0) {
+					//WeaponOverheated ();			TEMPORARY REMOVED
+					userInfo.heat = 0;
+				}
             }
         }
 
@@ -93,7 +95,7 @@ public class Player : MonoBehaviour {
 		//
 
 		//UPDATE PER FRAMES: WEAPON COOLDOWN (OVERHEAT SYSTEM)
-		userInfo.heat += 30 *Time.deltaTime;
+		userInfo.heat += 15 *Time.deltaTime;
 		if (userInfo.heat > userInfo.heatMax)	
 			userInfo.heat = userInfo.heatMax;
 		//
