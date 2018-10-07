@@ -29,6 +29,8 @@ public class LevelManager : MonoBehaviour {
 				case 0: {			// SINGLE BATCH TEST
 					switch (spawnQueue) {
 						case 1: {
+							batchMod[1]=3;	batchMod[2]=0.25f;
+							spawnBatchCmd (11, 1, 1, -4.5f, 3.5f, 0f, 0, batchMod);
 							gameTimeMark = 0;
 							break;
 						}

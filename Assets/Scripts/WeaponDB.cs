@@ -1,4 +1,5 @@
-﻿using System.Collections;
+﻿using System;
+using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
@@ -61,8 +62,8 @@ public class WeaponDB : MonoBehaviour {
 				basePowerFROM = 3;						basePowerTO = 10;
 				baseProjectileFROM = 1;					baseProjectileTO = 5;
 				baseDelayMaxFROM = 20;					baseDelayMaxTO = 10;
-				baseHeatDesFROM = 10;					baseHeatDesTO = 7.5f;
-				baseHeatAccelBaseFROM = 0.2f;			baseHeatAccelBaseTO = 0.1f;
+				baseHeatDesFROM = 7;					baseHeatDesTO = 5;
+				baseHeatAccelBaseFROM = 0.1f;			baseHeatAccelBaseTO = 0.08f;
 				break;
 			case 2:				// Laser beam
 				baseType = 0;
@@ -102,7 +103,13 @@ public class WeaponDB : MonoBehaviour {
 		useraudiodb.playSFX(audiosource, userInfo.inventory[slotID].id);									//Play sfx with determined Card ID
 
 		int facedown = (userInfo.type == 2)?1:0;			// Face downward if user is an enemy
+		int unconcentrate = 0;								// Unconcentrating: Shots won't be accurate when stamina deplete
+		System.Random rnd = new System.Random();			// Randomizing angel for Unconcentrating Shots
 		Vector3 zDepth = new Vector3 (0, 0, -1);			// In 3D space, projectile stay on top of player and enemies in order to reflect light
+
+		if (userInfo.heat < userInfo.inventory[slotID].heatDes + 1) {
+			unconcentrate = 1;
+		}
 
 		// Card behaviour (TODO: Card properties (sprite, etc.) separately)
 		switch (userInfo.inventory[slotID].id) {
@@ -110,7 +117,7 @@ public class WeaponDB : MonoBehaviour {
 				int bulletAngel = 5;
 				for (var i = 0; i <= (userInfo.inventory[slotID].projectile-1)*2; i++) {
 					GameObject Bullet = Instantiate(projectile, user.transform.position + userInfo.barrelPos + zDepth, Quaternion.identity) as GameObject;
-					Bullet.transform.rotation = Quaternion.Euler(0, 0, user.transform.rotation.z - (userInfo.inventory[slotID].projectile - 1)*bulletAngel + bulletAngel*i + facedown*180);
+					Bullet.transform.rotation = Quaternion.Euler(0, 0, user.transform.rotation.z - (userInfo.inventory[slotID].projectile - 1)*bulletAngel + bulletAngel*i + facedown*180 + unconcentrate*rnd.Next(-5, 5));
 					Projectile bulletComponent = Bullet.GetComponent<Projectile>();			// Get Projectile.cs component
 					bulletComponent.damage = userInfo.inventory[slotID].power;				// Transfer damage/power data into Projectile.cs
 					bulletComponent.userType = userInfo.type;				// Transfer user type into Projectile.cs

@@ -1,4 +1,5 @@
-﻿using System.Collections;
+﻿using System;
+using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
@@ -6,34 +7,34 @@ public class Enemy : MonoBehaviour {
 
 	public Game.info userInfo;				//Using info struct from Game.cs
 
-	private float DEMOshootTimer = 0;
 	public float screenEdge = 4.5f;
 	public int enemyID;
 	public int enemyBatch;
+	private System.Random rnd = new System.Random();
 	public float[] enemyMod = new float[10];		//Value determined by EnemySpawner to change batch's behaviour
-	public float[] enemyVar = new float[10];			//Value changing throughout the process for batch's functions
+	public float[] enemyVar = new float[10];		//Value changing throughout the process for batch's functions
 
 	// Use this for initialization
 	void Start () {
-		//TEMPORARY
-		
 
 		// Enemy properties
 		switch (enemyID) {
 			case 0: {				// Test Enemy
-				userInfo.inventory = new WeaponDB.weapon[20];				//Initiating Player's card inventory
+				userInfo.inventory = new WeaponDB.weapon[20];				//Initiating Enemy's card inventory
 				WeaponDB.getCard(1, ref userInfo, 1, 1);
 				userInfo.type = 2;
-				userInfo.hp = 10f;
+				userInfo.hp = 5f;
 				userInfo.barrelPos = new Vector3 (0, -0.2f, 0);
+				StartCoroutine (startFirePattern (1, 3000, 200, 1, 0, 0));
 				break;
 			}
 			case 1: {				// Test Enemy 2
-				userInfo.inventory = new WeaponDB.weapon[20];				//Initiating Player's card inventory
+				userInfo.inventory = new WeaponDB.weapon[20];
 				WeaponDB.getCard(3, ref userInfo, 1, 8);
 				userInfo.type = 2;
-				userInfo.hp = 10f;
+				userInfo.hp = 5f;
 				userInfo.barrelPos = new Vector3 (0, -0.2f, 0);
+				StartCoroutine (startFirePattern (1, 2000, 0, 3, 100, 50));
 				break;
 			}
 		}
@@ -65,15 +66,14 @@ public class Enemy : MonoBehaviour {
 	
 	// Update is called once per frame
 	void Update () {
+		/*
 		DEMOshootTimer += 30 * Time.deltaTime;
 		if (DEMOshootTimer >= 30) {
 			WeaponDB weaponDB = GameObject.Find("GameMaster").GetComponent<WeaponDB>();
 			weaponDB.useCard (ref userInfo, userInfo.currentCard, gameObject);
 			DEMOshootTimer = 0;
 		}
-
-		//Enemy weapons
-		
+		*/
 
 		//Enemy movement
 		switch (enemyBatch) {
@@ -215,6 +215,27 @@ public class Enemy : MonoBehaviour {
 	}
 
 	public void EnemyDie () {
+		userInfo.hp = 0;
 		Destroy(gameObject);
+	}
+
+	private IEnumerator startFirePattern (int slotID, int gap, int randomGap, int continuous, int continuousGap, int randomContinuous) {
+		/* 
+		gap (ms): Time gap between segments
+		randomGap (ms): Random period for Time gap (Gap + (0 <->randomGap))
+		continuous (ms): Numbers of Fire shot in a segment
+		continuousGap (ms): Gap between Fire shots in a segment
+		randomContinuous (ms): Random period for continuousGap (continuousGap + (0 <-> randomContinoous))
+		*/
+		yield return new WaitForSeconds ( 1f*(gap + rnd.Next(0, randomGap) )/1000f );			//TEMPORARY
+
+		WeaponDB weaponDB = GameObject.Find("GameMaster").GetComponent<WeaponDB>();
+		while (userInfo.hp > 0) {
+			for (int i=0; i < continuous; i++) {
+				weaponDB.useCard (ref userInfo, userInfo.currentCard, gameObject);
+				yield return new WaitForSeconds ( 1f*(continuousGap + rnd.Next(0, randomContinuous) ) / 1000f );
+			}
+			yield return new WaitForSeconds ( 1f*(gap + rnd.Next(0, randomGap) )/1000f );
+		}
 	}
 }
