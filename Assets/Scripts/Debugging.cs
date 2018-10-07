@@ -35,6 +35,7 @@ public class Debugging : MonoBehaviour {
 		"\nID: " + player.userInfo.inventory[player.userInfo.currentCard].id +
 		"\nLevel: " + player.userInfo.inventory[player.userInfo.currentCard].level + 
 		"\nPower: " + player.userInfo.inventory[player.userInfo.currentCard].power +
+		"\nSpeed: " + player.userInfo.inventory[player.userInfo.currentCard].speed +
 		"\nProjectile: " + player.userInfo.inventory[player.userInfo.currentCard].projectile +
 		"\nDelay Max: " + player.userInfo.inventory[player.userInfo.currentCard].delayMax + 
 		"\nDelay: " + player.userInfo.inventory[player.userInfo.currentCard].delay + 

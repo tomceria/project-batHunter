@@ -21,20 +21,20 @@ public class Enemy : MonoBehaviour {
 		switch (enemyID) {
 			case 0: {				// Test Enemy
 				userInfo.inventory = new WeaponDB.weapon[20];				//Initiating Enemy's card inventory
-				WeaponDB.getCard(1, ref userInfo, 1, 1);
+				WeaponDB.getCard(101, ref userInfo, 1, 1);
 				userInfo.type = 2;
 				userInfo.hp = 5f;
 				userInfo.barrelPos = new Vector3 (0, -0.2f, 0);
-				StartCoroutine (startFirePattern (1, 3000, 200, 1, 0, 0));
+				StartCoroutine (startFirePattern (1, 1000, 7000, 1, 0, 0));
 				break;
 			}
 			case 1: {				// Test Enemy 2
 				userInfo.inventory = new WeaponDB.weapon[20];
-				WeaponDB.getCard(3, ref userInfo, 1, 8);
+				WeaponDB.getCard(102, ref userInfo, 1, 8);
 				userInfo.type = 2;
 				userInfo.hp = 5f;
 				userInfo.barrelPos = new Vector3 (0, -0.2f, 0);
-				StartCoroutine (startFirePattern (1, 2000, 0, 3, 100, 50));
+				StartCoroutine (startFirePattern (1, 1000, 10000, 3, 100, 0));
 				break;
 			}
 		}

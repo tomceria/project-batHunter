@@ -1004,7 +1004,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 0
+  m_IsActive: 1
 --- !u!224 &1115536545
 RectTransform:
   m_ObjectHideFlags: 0
@@ -1469,8 +1469,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 34e0d61eba1684a94b11032707ad62a7, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  projectile: {fileID: 112538, guid: 302314224f6046644821feb11f0a09e6, type: 2}
   laser: {fileID: 1961985457993686, guid: 04d65479a5f1a413cb7deec6871e4b15, type: 2}
+  longBullet: {fileID: 112538, guid: 302314224f6046644821feb11f0a09e6, type: 2}
+  smallBall: {fileID: 1191418440379704, guid: 78eac847bd5c546c89dd38f7359c8c24, type: 2}
 --- !u!114 &1865202963
 MonoBehaviour:
   m_ObjectHideFlags: 0

@@ -20,7 +20,8 @@ public class UserAudioDB : MonoBehaviour {
 	public void playSFX (AudioSource sfxSource, int sfxID) {
 		switch (sfxID) {
 			case 1:
-			case 3: {
+			case 101:
+			case 102: {
 				sfxSource.clip = ioncannon;
 			}
 			break;

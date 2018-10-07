@@ -46,7 +46,7 @@ public class LevelManager : MonoBehaviour {
 						case 2: {
 							batchMod[1]=3;	batchMod[2]=0.25f;
 							spawnBatchCmd (11, 0, 5, -4.5f, 3.5f, 0.25f, 0, batchMod);
-							gameTimeMark = 6;
+							gameTimeMark = 12;
 							break;
 						}
 						case 3: {
@@ -55,7 +55,7 @@ public class LevelManager : MonoBehaviour {
 							batchMod2[1]=1;		batchMod2[2]=5f;	batchMod2[3]=-1f;
 							spawnBatchCmd (25, 0, 10, 1f, 5.5f, 0.5f, 0, batchMod2);
 							//
-							gameTimeMark = 15;
+							gameTimeMark = 30;
 							break;
 						}
                         case 4: {

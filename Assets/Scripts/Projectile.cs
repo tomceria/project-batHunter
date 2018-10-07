@@ -4,25 +4,24 @@ using System.Collections;
 public class Projectile : MonoBehaviour {
 
     public Rigidbody2D projectileRigid;
-    public Camera theCamera;
     private float accelerate;
     public float damage;            // Receive variable from WeaponDB
     public float userType;          // Receive variable from WeaponDB
+    public float travelSpeed;       // Receive variable from WeaponDB
     //private static int ProjectileweaponLevel;
 
 
     // Use this for initialization
     void Start () {
         accelerate = 10f;
+        Debug.Log(travelSpeed);
         //WEAPON INITIAL PROPERTIES
-        gameObject.GetComponent<Rigidbody2D>().AddForce(transform.up * 50f * accelerate);
+        gameObject.GetComponent<Rigidbody2D>().AddForce(transform.up * travelSpeed * accelerate);
     }
 	
 	// Update is called once per frame
 	void FixedUpdate () {
-
-        
-        //accelerate += 0.25f;
+        //accelerate += 0.25f;              UNUSED FOR NOW
     }
     
     void Update () {

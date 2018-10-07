@@ -5,14 +5,17 @@ using UnityEngine;
 
 public class WeaponDB : MonoBehaviour {
 
-	public GameObject projectile;
+	private GameObject projectile;
 	public GameObject laser;
+	public GameObject longBullet;
+	public GameObject smallBall;
 
 	public struct weapon {
 		public int id;
 		public int type;
 		public int level;
 		public float power;
+		public float speed;
 		public int projectile;
 		public float delay;
 		public float delayMax;
@@ -49,17 +52,19 @@ public class WeaponDB : MonoBehaviour {
 			Weapon/Card variables:
 			TYPE: Card type: 0: Weapon Module; 1: Spell Card; 2: Consumables; 3: Special
 			POWER: Card Damage / Buff power / Debuff power
+			SPEED: Projectile travel speed / Spell Channel time / etc
 			PROJECTILE: Card Projectiles number / size
 			DELAYMAX: Card delay, decreases every frame, unusuable until reaches 0. Reset when use card
 			HEATDES: Heat cost
 			HEATACCELBASE: Heat acceleration, increases by multiplicative increment
 		*/
 		int baseType=0, baseProjectileFROM=0, baseProjectileTO=0;
-		float basePowerFROM=0, basePowerTO=0, baseDelayMaxFROM=0, baseDelayMaxTO=0, baseHeatDesFROM=0, baseHeatDesTO=0, baseHeatAccelBaseFROM=0, baseHeatAccelBaseTO=0;
+		float basePowerFROM=0, basePowerTO=0, baseSpeedFROM=0, baseSpeedTO=0, baseDelayMaxFROM=0, baseDelayMaxTO=0, baseHeatDesFROM=0, baseHeatDesTO=0, baseHeatAccelBaseFROM=0, baseHeatAccelBaseTO=0;
 		switch (id) {
 			case 1:				// Stick-projectile shoot in cone shape
 				baseType = 0;
 				basePowerFROM = 3;						basePowerTO = 10;
+				baseSpeedFROM = 50;						baseSpeedTO = 50;
 				baseProjectileFROM = 1;					baseProjectileTO = 5;
 				baseDelayMaxFROM = 20;					baseDelayMaxTO = 10;
 				baseHeatDesFROM = 7;					baseHeatDesTO = 5;
@@ -68,14 +73,27 @@ public class WeaponDB : MonoBehaviour {
 			case 2:				// Laser beam
 				baseType = 0;
 				basePowerFROM = 8;						basePowerTO = 20;
+				baseSpeedFROM = 0;						baseSpeedTO = 0;
 				baseProjectileFROM = 1;					baseProjectileTO = 3;
 				baseDelayMaxFROM = 30;					baseDelayMaxTO = 20;
 				baseHeatDesFROM = 20;					baseHeatDesTO = 16;
 				baseHeatAccelBaseFROM = 0.3f;			baseHeatAccelBaseTO = 0.28f;
 				break;
-			case 3:				// Ball-projectile shoot in 180/x direction (surrounding)
+			
+			//Enemy weapons
+			case 101:				// Stick-projectile shoot in cone shape (TEMPORARY)
 				baseType = 0;
 				basePowerFROM = 3;						basePowerTO = 10;
+				baseSpeedFROM = 20;						baseSpeedTO = 20;
+				baseProjectileFROM = 1;					baseProjectileTO = 5;
+				baseDelayMaxFROM = 20;					baseDelayMaxTO = 10;
+				baseHeatDesFROM = 7;					baseHeatDesTO = 5;
+				baseHeatAccelBaseFROM = 0.1f;			baseHeatAccelBaseTO = 0.08f;
+				break;
+			case 102:				// Ball-projectile shoot in 180/x direction (surrounding)
+				baseType = 0;
+				basePowerFROM = 3;						basePowerTO = 10;
+				baseSpeedFROM = 10;						baseSpeedTO = 10;
 				baseProjectileFROM = 1;					baseProjectileTO = 5;
 				baseDelayMaxFROM = 15;					baseDelayMaxTO = 13;
 				baseHeatDesFROM = 10;					baseHeatDesTO = 6;
@@ -85,6 +103,7 @@ public class WeaponDB : MonoBehaviour {
 		userInfo.inventory[slotID].type = baseType;
 		userInfo.inventory[slotID].projectile = ((baseProjectileTO-baseProjectileFROM)*(userInfo.inventory[slotID].level-1)/(10-1))+baseProjectileFROM;
 		userInfo.inventory[slotID].power = ((basePowerTO-basePowerFROM)*(userInfo.inventory[slotID].level-1)/(10-1))+basePowerFROM;
+		userInfo.inventory[slotID].speed = ((baseSpeedTO-baseSpeedFROM)*(userInfo.inventory[slotID].level-1)/(10-1))+baseSpeedFROM;
 		userInfo.inventory[slotID].delayMax = ((baseDelayMaxTO-baseDelayMaxFROM)*(userInfo.inventory[slotID].level-1)/(10-1))+baseDelayMaxFROM;
 		userInfo.inventory[slotID].delay = userInfo.inventory[slotID].delayMax;			// Non-static
 		userInfo.inventory[slotID].heatDes = ((baseHeatDesTO-baseHeatDesFROM)*(userInfo.inventory[slotID].level-1)/(10-1))+baseHeatDesFROM;
@@ -111,33 +130,53 @@ public class WeaponDB : MonoBehaviour {
 			unconcentrate = 1;
 		}
 
-		// Card behaviour (TODO: Card properties (sprite, etc.) separately)
+		//PREFAB SELECT
 		switch (userInfo.inventory[slotID].id) {
-			case 1: {				// Stick-projectile shoot in cone shape
+			case 1:
+			case 101: {
+				projectile = longBullet;
+			}
+			break;
+			case 102: {
+				projectile = smallBall;
+			}
+			break;
+			case 2: {
+				projectile = laser;
+			}
+			break;
+		}
+		// CARD BEHAVIOUR (TODO: Card properties (sprite, etc.) separately)
+		switch (userInfo.inventory[slotID].id) {
+			case 1:
+			case 101: {				// Stick-projectile shoot in cone shape
 				int bulletAngel = 5;
 				for (var i = 0; i <= (userInfo.inventory[slotID].projectile-1)*2; i++) {
 					GameObject Bullet = Instantiate(projectile, user.transform.position + userInfo.barrelPos + zDepth, Quaternion.identity) as GameObject;
 					Bullet.transform.rotation = Quaternion.Euler(0, 0, user.transform.rotation.z - (userInfo.inventory[slotID].projectile - 1)*bulletAngel + bulletAngel*i + facedown*180 + unconcentrate*rnd.Next(-5, 5));
 					Projectile bulletComponent = Bullet.GetComponent<Projectile>();			// Get Projectile.cs component
+					//VARIABLE TRANSFER
 					bulletComponent.damage = userInfo.inventory[slotID].power;				// Transfer damage/power data into Projectile.cs
-					bulletComponent.userType = userInfo.type;				// Transfer user type into Projectile.cs
+					bulletComponent.travelSpeed = userInfo.inventory[slotID].speed;			// Transfer speed into Projectile.cs
+					bulletComponent.userType = userInfo.type;								// Transfer user type into Projectile.cs
 				}
 				break;
 			}
 			case 2: {				// Laser beam
-				GameObject Laser = Instantiate(laser, new Vector2(user.transform.position.x, user.transform.position.y + 0.8f), Quaternion.identity) as GameObject;
+				GameObject Laser = Instantiate(projectile, new Vector2(user.transform.position.x, user.transform.position.y + 0.8f), Quaternion.identity) as GameObject;
 				Laser.transform.rotation = Quaternion.Euler(0, 0, 0 + facedown*180);
 				//TODO: Laser size based on w.projectile
 				break;
 			}
-			case 3: {				// Ball-projectile shoot in 180/x direction (surrounding)
+			case 102: {				// Ball-projectile shoot in 180/x direction (surrounding)
 				int bulletAngel = 180/(userInfo.inventory[slotID].projectile);
 				for (var i = 0; i < userInfo.inventory[slotID].projectile * 2; i++) {
 					GameObject Bullet = Instantiate(projectile, user.transform.position + userInfo.barrelPos + zDepth, Quaternion.identity) as GameObject;
 					Bullet.transform.rotation = Quaternion.Euler(0, 0, user.transform.rotation.z + bulletAngel*i);
 					Projectile bulletComponent = Bullet.GetComponent<Projectile>();			// Get Projectile.cs component
 					bulletComponent.damage = userInfo.inventory[slotID].power;				// Transfer damage/power data into Projectile.cs
-					bulletComponent.userType = userInfo.type;				// Transfer user type into Projectile.cs
+					bulletComponent.travelSpeed = userInfo.inventory[slotID].speed;			// Transfer speed into Projectile.cs
+					bulletComponent.userType = userInfo.type;								// Transfer user type into Projectile.cs
 				}
 				break;
 			}

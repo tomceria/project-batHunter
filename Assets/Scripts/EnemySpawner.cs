@@ -25,6 +25,7 @@ public class EnemySpawner : MonoBehaviour {
 
 	public static void spawnEnemy (int enemyID, Vector2 ogPos, int batchID, float[] mod) {
 		EnemySpawner enemyspawner = GameObject.Find("GameMaster").GetComponent<EnemySpawner>();
+		//TODO: Spawn prefab based on enemyID
 		GameObject enemy = Instantiate (enemyspawner.EnemyObj, ogPos, Quaternion.identity);
 		Enemy EnemyComponent = enemy.GetComponent<Enemy>();
 		EnemyComponent.enemyID = enemyID;				// Send "enemyID" over to "enemy" object => Determine enemy properties

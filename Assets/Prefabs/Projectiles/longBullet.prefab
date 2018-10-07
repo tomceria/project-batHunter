@@ -14,7 +14,7 @@ GameObject:
   - component: {fileID: 108818469004278320}
   - component: {fileID: 61907340037272446}
   m_Layer: 0
-  m_Name: playerProjectile
+  m_Name: longBullet
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -27,7 +27,7 @@ Transform:
   m_PrefabInternal: {fileID: 100100000}
   m_GameObject: {fileID: 112538}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 1.4618411, y: 1.1980712, z: -1}
+  m_LocalPosition: {x: 0, y: 0, z: -1}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 0}
@@ -44,7 +44,7 @@ Rigidbody2D:
   m_Simulated: 1
   m_UseFullKinematicContacts: 0
   m_UseAutoMass: 1
-  m_Mass: 0.053758584
+  m_Mass: 1
   m_LinearDrag: 0
   m_AngularDrag: 0.05
   m_GravityScale: 0
@@ -65,9 +65,9 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   projectileRigid: {fileID: 5086668}
-  theCamera: {fileID: 0}
   damage: 0
   userType: 0
+  travelSpeed: 0
 --- !u!212 &21247984
 SpriteRenderer:
   m_ObjectHideFlags: 1
