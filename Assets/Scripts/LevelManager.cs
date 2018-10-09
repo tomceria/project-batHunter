@@ -44,8 +44,8 @@ public class LevelManager : MonoBehaviour {
 							break;		//First spawn delay, actual spawn starts after this mark
 						}		
 						case 2: {
-							batchMod[1]=3;	batchMod[2]=0.25f;
-							spawnBatchCmd (11, 0, 5, -4.5f, 3.5f, 0.25f, 0, batchMod);
+							batchMod[1]=2;	batchMod[2]=0.25f;
+							spawnBatchCmd (11, 0, 5, -4.5f, 3.5f, 0.5f, 0, batchMod);
 							gameTimeMark = 12;
 							break;
 						}
@@ -59,8 +59,8 @@ public class LevelManager : MonoBehaviour {
 							break;
 						}
                         case 4: {
-							batchMod[1]=1.5f;		batchMod[2]=1;		batchMod[3]=4;		batchMod[4]=4;
-							spawnBatchCmd (31, 1, 20, -4.5f, -3.5f, 0.3f, 0, batchMod);
+							batchMod[1]=0.7f;		batchMod[2]=1;		batchMod[3]=4;		batchMod[4]=4;
+							spawnBatchCmd (31, 1, 20, -4.5f, -3.5f, 1f, 0, batchMod);
 							gameTimeMark = 100;
 							break;
 						}
