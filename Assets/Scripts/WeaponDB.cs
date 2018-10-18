@@ -61,7 +61,7 @@ public class WeaponDB : MonoBehaviour {
 		int baseType=0, baseProjectileFROM=0, baseProjectileTO=0;
 		float basePowerFROM=0, basePowerTO=0, baseSpeedFROM=0, baseSpeedTO=0, baseDelayMaxFROM=0, baseDelayMaxTO=0, baseHeatDesFROM=0, baseHeatDesTO=0, baseHeatAccelBaseFROM=0, baseHeatAccelBaseTO=0;
 		switch (id) {
-			case 1:				// Stick-projectile shoot in cone shape
+			case 1:				// HOLY
 				baseType = 0;
 				basePowerFROM = 3;						basePowerTO = 10;
 				baseSpeedFROM = 50;						baseSpeedTO = 50;
@@ -76,8 +76,8 @@ public class WeaponDB : MonoBehaviour {
 				baseSpeedFROM = 0;						baseSpeedTO = 0;
 				baseProjectileFROM = 1;					baseProjectileTO = 3;
 				baseDelayMaxFROM = 30;					baseDelayMaxTO = 20;
-				baseHeatDesFROM = 20;					baseHeatDesTO = 16;
-				baseHeatAccelBaseFROM = 0.3f;			baseHeatAccelBaseTO = 0.28f;
+				baseHeatDesFROM = 14;					baseHeatDesTO = 8;
+				baseHeatAccelBaseFROM = 0.05f;			baseHeatAccelBaseTO = 0.01f;
 				break;
 			
 			//Enemy weapons
@@ -142,7 +142,7 @@ public class WeaponDB : MonoBehaviour {
 			}
 			break;
 			case 2: {
-				projectile = laser;
+				projectile = laser;				//TEMPORARY
 			}
 			break;
 		}
@@ -163,9 +163,13 @@ public class WeaponDB : MonoBehaviour {
 				break;
 			}
 			case 2: {				// Laser beam
-				GameObject Laser = Instantiate(projectile, new Vector2(user.transform.position.x, user.transform.position.y + 0.8f), Quaternion.identity) as GameObject;
-				Laser.transform.rotation = Quaternion.Euler(0, 0, 0 + facedown*180);
+				GameObject Beam = Instantiate(projectile, new Vector2(user.transform.position.x, user.transform.position.y + userInfo.barrelPos.y), Quaternion.identity) as GameObject;
+				Beam.transform.rotation = Quaternion.Euler(0, 0, 0 + facedown*180);
 				//TODO: Laser size based on w.projectile
+				Laser laserComponent = Beam.GetComponent<Laser>();
+				laserComponent.laserWidth = userInfo.inventory[slotID].projectile;
+				laserComponent.damage = userInfo.inventory[slotID].power;				// Transfer damage/power data into Projectile.cs
+				laserComponent.userType = userInfo.type;								// Transfer user type into Projectile.cs
 				break;
 			}
 			case 102: {				// Ball-projectile shoot in 180/x direction (surrounding)

@@ -33,7 +33,8 @@ public class Enemy : MonoBehaviour {
 				WeaponDB.getCard(102, ref userInfo, 1, 8);
 				userInfo.type = 2;
 				userInfo.hp = 5f;
-				userInfo.barrelPos = new Vector3 (0, -0.2f, 0);
+				userInfo.barrelPos = new Vector3 (0, 0, 0);
+				gameObject.GetComponent<SpriteRenderer>().color = Color.red;
 				StartCoroutine (startFirePattern (1, 1000, 10000, 3, 100, 0));
 				break;
 			}

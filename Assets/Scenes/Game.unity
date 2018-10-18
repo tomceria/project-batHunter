@@ -616,7 +616,7 @@ GameObject:
   m_Component:
   - component: {fileID: 1007337958}
   - component: {fileID: 1007337957}
-  m_Layer: 0
+  m_Layer: 8
   m_Name: backgroundtest
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -1387,7 +1387,7 @@ Prefab:
       objectReference: {fileID: 0}
     - target: {fileID: 4541458959839164, guid: e19dd17de855f407c98c7399a18c9145, type: 2}
       propertyPath: m_RootOrder
-      value: 2
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 114414232879510632, guid: e19dd17de855f407c98c7399a18c9145,
         type: 2}
@@ -1710,7 +1710,7 @@ Transform:
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 0}
-  m_RootOrder: 1
+  m_RootOrder: 2
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!114 &2116542446
 MonoBehaviour:

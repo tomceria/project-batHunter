@@ -13,7 +13,7 @@ GameObject:
   - component: {fileID: 5086668}
   - component: {fileID: 108818469004278320}
   - component: {fileID: 61907340037272446}
-  m_Layer: 0
+  m_Layer: 9
   m_Name: longBullet
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -172,7 +172,7 @@ Light:
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInternal: {fileID: 100100000}
   m_GameObject: {fileID: 112538}
-  m_Enabled: 1
+  m_Enabled: 0
   serializedVersion: 8
   m_Type: 2
   m_Color: {r: 1, g: 1, b: 1, a: 1}

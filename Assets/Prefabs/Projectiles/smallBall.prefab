@@ -24,7 +24,7 @@ GameObject:
   - component: {fileID: 50592576879666324}
   - component: {fileID: 108671468294261856}
   - component: {fileID: 58470767499368914}
-  m_Layer: 0
+  m_Layer: 9
   m_Name: smallBall
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -85,7 +85,7 @@ Light:
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInternal: {fileID: 100100000}
   m_GameObject: {fileID: 1191418440379704}
-  m_Enabled: 1
+  m_Enabled: 0
   serializedVersion: 8
   m_Type: 2
   m_Color: {r: 1, g: 1, b: 1, a: 1}

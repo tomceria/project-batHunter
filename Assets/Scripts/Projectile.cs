@@ -14,7 +14,6 @@ public class Projectile : MonoBehaviour {
     // Use this for initialization
     void Start () {
         accelerate = 10f;
-        Debug.Log(travelSpeed);
         //WEAPON INITIAL PROPERTIES
         gameObject.GetComponent<Rigidbody2D>().AddForce(transform.up * travelSpeed * accelerate);
     }
