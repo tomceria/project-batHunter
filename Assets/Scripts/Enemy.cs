@@ -40,14 +40,23 @@ public class Enemy : MonoBehaviour {
 			}
 		}
 		gameObject.tag = "Enemy";
-		userInfo.currentCard = 1;
+		userInfo.currentCard = 1;				//TEMP
 		userInfo.heatMax = 100;
 		userInfo.heat = userInfo.heatMax;
 		//
 
 		// Enemy movement variable (Startup)
 		switch (enemyBatch) {
-			// Sin-Wave:
+			// Zig-Zag Approaching
+			case 2: {
+				enemyVar[1] = transform.position.x;
+				enemyVar[2] = transform.position.y;
+				enemyVar[3] = 1000;					// Increasing time, instantly move after spawning
+				enemyVar[5] = 0;					//5; 6: Random value, enemy move toward near player
+				enemyVar[6] = 0;
+				break;
+			}
+			// Sin-Wave & Curve:
 			case 21:
 			case 22:
 			case 23:
@@ -78,7 +87,47 @@ public class Enemy : MonoBehaviour {
 
 		//Enemy movement
 		switch (enemyBatch) {
-			
+
+			/*
+			AUTO PATHING
+			mod 1: Movement speed
+			mod 2: Refresh rate (second)
+			mod 3: Player approaching radius
+			mod 4: Player approaching radius' decrement
+			*/
+			// Straight-up Approaching Player
+			case 1: {
+				Player playerComponent = GameObject.Find("Player").GetComponent<Player>();
+				transform.position = Vector2.MoveTowards (gameObject.transform.position, playerComponent.transform.position, enemyMod[1] * Time.deltaTime);
+				
+			}
+			break;
+			// Approaching Zig-Zag Style (Random near player)
+			// (The goal is to make enemy move towards the outline of player's radius, radius reduce every step)
+			case 2: {
+				Player playerComponent = GameObject.Find("Player").GetComponent<Player>();
+				enemyVar[3] += 1f * Time.deltaTime;				// Increase by time, reset when reaching refresh rate time
+				Debug.Log (enemyVar[3]);
+				if (enemyVar[3] >= enemyMod[2]) {
+					enemyMod[3] -= enemyMod[4];			// Decrease radius (WARNING: ENEMYMOD IS NOT SUPPOSED TO BE CHANGED THROUGHOUT THE PROCESS, TO BE CHANGED)
+					// Update player's position
+					enemyVar[1] = playerComponent.transform.position.x;
+					enemyVar[2] = playerComponent.transform.position.y;
+					// Update random position
+					enemyVar[5] = rnd.Next (-2, 2);
+					enemyVar[6] = rnd.Next (-2, 2);
+					//Reset timer
+					enemyVar[3] = 0;
+				}
+				// Approach player until reaching player's radius (calculate by distance between enemy and player)
+				if (Vector2.Distance(transform.position, new Vector2 (enemyVar[1], enemyVar[2])) > enemyMod[3]) {
+					transform.position = Vector2.MoveTowards (gameObject.transform.position, new Vector2 (enemyVar[1] + enemyVar[5], enemyVar[2] + enemyVar[6]), enemyMod[1] * Time.deltaTime);
+				}
+
+				
+			}
+			break;
+
 			/*
 			STRAIGHT LINE
 			mod 1: Vertical movement speed			//Vertical movement speed = 0 => straight horizontal movement

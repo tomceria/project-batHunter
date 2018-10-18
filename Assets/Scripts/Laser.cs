@@ -83,7 +83,7 @@ public class Laser : MonoBehaviour {
 
 				
 			}
-			Debug.DrawRay (beamStartPos, new Vector2 (transform.position.x, raycastSize), Color.black, 2f);		//debug
+			Debug.DrawRay (beamStartPos, new Vector2 (0, raycastSize), Color.black, 2f);		//debug
 		}
 
 		// DEAL DAMAGE
