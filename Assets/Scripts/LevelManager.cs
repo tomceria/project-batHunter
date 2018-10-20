@@ -25,13 +25,23 @@ public class LevelManager : MonoBehaviour {
 			float[] batchMod = new float[10];
 			float[] batchMod2 = new float[10];
 			//float[] batchMod3 = new float[10];
+			/* 
+			NOTE:
+			spawnBatchCmd (int batchID, int enemyID, int enemyQuantity, float posX, float posY, float spawnTimeGap, float spawnDelay, float[] mod)
+			*/
 			switch (stageID) {
 				case 0: {			// SINGLE BATCH TEST
 					switch (spawnQueue) {
 						case 1: {
 							batchMod[1]=5f;	batchMod[2]=0.5f;	batchMod[3]=3;	batchMod[4]=0.5f;
 							spawnBatchCmd (2, 1, 1, -4.5f, 3.5f, 0, 0, batchMod);
-							gameTimeMark = 0;
+							gameTimeMark = 5;
+							break;
+						}
+						case 2: {
+							batchMod[1]=0.5f;	batchMod[2]=2f;	batchMod[3]=1f;	batchMod[4]=5f;	batchMod[5]=5f;
+							spawnBatchCmd (3, 0, 1, 2f, 3f, 0, 0, batchMod);
+							gameTimeMark = 100;
 							break;
 						}
 					}

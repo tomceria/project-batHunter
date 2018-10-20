@@ -49,11 +49,19 @@ public class Enemy : MonoBehaviour {
 		switch (enemyBatch) {
 			// Zig-Zag Approaching
 			case 2: {
-				enemyVar[1] = transform.position.x;
-				enemyVar[2] = transform.position.y;
+				//enemyVar[1]: player position x
+				//enemyVar[2]: player position y
 				enemyVar[3] = 1000;					// Increasing time, instantly move after spawning
 				enemyVar[5] = 0;					//5; 6: Random value, enemy move toward near player
 				enemyVar[6] = 0;
+				break;
+			}
+			// Random movement
+			case 3: {
+				//enemyVar[1]: destination position x
+				//enemyVar[2]: destination position y
+				enemyVar[3] = 1000;					// Increasing time, instantly move randomly after spawning
+				enemyVar[4] = 0;					// Refresh rate time gap. Starts as 0 as enemy moves immediately after spawning, update afterward
 				break;
 			}
 			// Sin-Wave & Curve:
@@ -91,9 +99,6 @@ public class Enemy : MonoBehaviour {
 			/*
 			AUTO PATHING
 			mod 1: Movement speed
-			mod 2: Refresh rate (second)
-			mod 3: Player approaching radius
-			mod 4: Player approaching radius' decrement
 			*/
 			// Straight-up Approaching Player
 			case 1: {
@@ -104,11 +109,16 @@ public class Enemy : MonoBehaviour {
 			break;
 			// Approaching Zig-Zag Style (Random near player)
 			// (The goal is to make enemy move towards the outline of player's radius, radius reduce every step)
+			/*
+			mod 2: Refresh rate (second)
+			mod 3: Player approaching radius
+			mod 4: Player approaching radius' decrement
+			Default: 5, 0.5, 3, 0.5
+			*/
 			case 2: {
 				Player playerComponent = GameObject.Find("Player").GetComponent<Player>();
 				enemyVar[3] += 1f * Time.deltaTime;				// Increase by time, reset when reaching refresh rate time
-				Debug.Log (enemyVar[3]);
-				if (enemyVar[3] >= enemyMod[2]) {
+				if (enemyVar[3] >= enemyMod[2]) {		// Start immediately after spawning (enemyVar[3] = 1000)
 					enemyMod[3] -= enemyMod[4];			// Decrease radius (WARNING: ENEMYMOD IS NOT SUPPOSED TO BE CHANGED THROUGHOUT THE PROCESS, TO BE CHANGED)
 					// Update player's position
 					enemyVar[1] = playerComponent.transform.position.x;
@@ -123,8 +133,31 @@ public class Enemy : MonoBehaviour {
 				if (Vector2.Distance(transform.position, new Vector2 (enemyVar[1], enemyVar[2])) > enemyMod[3]) {
 					transform.position = Vector2.MoveTowards (gameObject.transform.position, new Vector2 (enemyVar[1] + enemyVar[5], enemyVar[2] + enemyVar[6]), enemyMod[1] * Time.deltaTime);
 				}
-
-				
+			}
+			break;
+			// Random movement
+			/*
+			mod 2: Refresh rate (second)
+			mod 3: Refresh rate random gap (second)
+			mod 4: Max random X
+			mod 5: Max random Y
+			*/
+			case 3: {
+				enemyVar[3] += 1f * Time.deltaTime;				// Increase by time, reset when reaching refresh rate time
+				if (enemyVar[3] > enemyMod[2] + enemyVar[4]) {		// Check if Time > Refresh Rate + Refresh Rate Random Gap (enemyVar4)
+					// Update destination position
+					do {	// Do boundaries check
+						enemyVar[1] = transform.position.x + rnd.Next (-1 * (int)enemyMod[4], (int)enemyMod[4]);
+						enemyVar[2] = transform.position.y + rnd.Next (-1 * (int)enemyMod[5], (int)enemyMod[5]);
+					}
+					while (boundaryCheck (enemyVar[1], enemyVar[2]) == 0);
+					// Update Refresh rate random gap
+					int rrRandomGap = (int)(enemyMod[3] * 1000);			// Convert to milisecond (avoid INT restriction of rnd.Next)
+					enemyVar[4] = rnd.Next (0, rrRandomGap) / 1000f;		// Convert to second
+					//Reset timer
+					enemyVar[3] = 0;
+				}
+				transform.position = Vector2.MoveTowards (gameObject.transform.position, new Vector2 (enemyVar[1], enemyVar[2]), enemyMod[1] * Time.deltaTime);
 			}
 			break;
 
@@ -158,9 +191,9 @@ public class Enemy : MonoBehaviour {
 			*/
 			// Sin-Wave: Left to Right - Pseudo-Descending
 			case 21: {
-				enemyVar[1] += (enemyMod[1] * Time.deltaTime);
+				enemyVar[1] += (enemyMod[1] * Time.deltaTime);								// increases x through time
 				enemyVar[2] = enemyMod[3] * Mathf.Sin(enemyMod[2] * enemyVar[1]);			// y = a*sin(kx)
-				enemyVar[3] += enemyVar[1];		enemyVar[4] += enemyVar[2];
+				enemyVar[3] += enemyVar[1];		enemyVar[4] += enemyVar[2];					// Update temporary position
 				transform.position = new Vector2 (enemyVar[3], enemyVar[4]);
 				enemyVar[3] -= enemyVar[1];		enemyVar[4] -= enemyVar[2];				//Reset to spawn position
 
@@ -287,5 +320,17 @@ public class Enemy : MonoBehaviour {
 			}
 			yield return new WaitForSeconds ( 1f*(gap + rnd.Next(0, randomGap) )/1000f );
 		}
+	}
+
+	private int boundaryCheck (float x, float y) {
+		if (x < -3.85f)
+			return 0;
+		if (x > 3.85f)
+			return 0;
+		if (y < -3.8f)
+			return 0;
+		if (y > 5f)
+			return 0;
+		return 1;
 	}
 }
