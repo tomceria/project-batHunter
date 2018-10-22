@@ -23,7 +23,7 @@ public class EnemySpawner : MonoBehaviour {
 
 	}
 
-	public static void spawnEnemy (int enemyID, Vector2 ogPos, int batchID, float[] mod) {
+	public static void spawnEnemy (int enemyID, Vector2 ogPos, string batchID, float[] mod) {
 		EnemySpawner enemyspawner = GameObject.Find("GameMaster").GetComponent<EnemySpawner>();
 		//TODO: Spawn prefab based on enemyID
 		GameObject enemy = Instantiate (enemyspawner.EnemyObj, ogPos, Quaternion.identity);
@@ -33,7 +33,7 @@ public class EnemySpawner : MonoBehaviour {
 		EnemyComponent.enemyMod = mod;					// Send "mod" (float array) over to "enemy" object => Enemy Batch initial modifications
 	}
 
-	public static IEnumerator spawnEnemyBatch (int batchID, int enemyID, int enemyQuantity, Vector2 ogPos, float spawnTimeGap, float spawnDelay, float[] mod) {
+	public static IEnumerator spawnEnemyBatch (string batchID, int enemyID, int enemyQuantity, Vector2 ogPos, float spawnTimeGap, float spawnDelay, float[] mod) {
 		//TODO: Spawn portal, closes when loop is finished
 		yield return new WaitForSeconds (spawnDelay);
 		//switch (batchID) {

@@ -9,7 +9,7 @@ public class Enemy : MonoBehaviour {
 
 	public float screenEdge = 4.5f;
 	public int enemyID;
-	public int enemyBatch;
+	public string enemyBatch;
 	private System.Random rnd = new System.Random();
 	public float[] enemyMod = new float[10];		//Value determined by EnemySpawner to change batch's behaviour
 	public float[] enemyVar = new float[10];		//Value changing throughout the process for batch's functions
@@ -42,13 +42,13 @@ public class Enemy : MonoBehaviour {
 		gameObject.tag = "Enemy";
 		userInfo.currentCard = 1;				//TEMP
 		userInfo.heatMax = 100;
-		userInfo.heat = userInfo.heatMax;
+		//userInfo.heat = userInfo.heatMax;
 		//
 
 		// Enemy movement variable (Startup)
 		switch (enemyBatch) {
 			// Zig-Zag Approaching
-			case 2: {
+			case "autoZigzagPlayer": {
 				//enemyVar[1]: player position x
 				//enemyVar[2]: player position y
 				enemyVar[3] = 1000;					// Increasing time, instantly move after spawning
@@ -57,7 +57,7 @@ public class Enemy : MonoBehaviour {
 				break;
 			}
 			// Random movement
-			case 3: {
+			case "autoRandomXY": {
 				//enemyVar[1]: destination position x
 				//enemyVar[2]: destination position y
 				enemyVar[3] = 1000;					// Increasing time, instantly move randomly after spawning
@@ -65,12 +65,13 @@ public class Enemy : MonoBehaviour {
 				break;
 			}
 			// Sin-Wave & Curve:
-			case 21:
-			case 22:
-			case 23:
-			case 24:
-			case 25:
-			case 31: {		//Apply for y=sin(x), y=(x/a)^b
+			case "sinRightDes":
+			case "sinLeftDes":
+			case "sinRightAsc":
+			case "sinLeftAsc":
+			case "sinDown":
+			case "curveRight":
+			case "curveLeft": {		//Apply for y=sin(x), y=(x/a)^b
 				enemyVar[1] = 0;		//static x
 				enemyVar[2] = 0;		//static y
 				enemyVar[3] = transform.position.x;			//Spawn position; both static x and y will calculate y=sin(x) separately, + currentPos afterward in here
@@ -92,6 +93,8 @@ public class Enemy : MonoBehaviour {
 			DEMOshootTimer = 0;
 		}
 		*/
+		// TEMP
+		userInfo.heat = userInfo.heatMax;
 
 		//Enemy movement
 		switch (enemyBatch) {
@@ -101,7 +104,7 @@ public class Enemy : MonoBehaviour {
 			mod 1: Movement speed
 			*/
 			// Straight-up Approaching Player
-			case 1: {
+			case "autoGotoPlayer": {
 				Player playerComponent = GameObject.Find("Player").GetComponent<Player>();
 				transform.position = Vector2.MoveTowards (gameObject.transform.position, playerComponent.transform.position, enemyMod[1] * Time.deltaTime);
 				
@@ -115,7 +118,7 @@ public class Enemy : MonoBehaviour {
 			mod 4: Player approaching radius' decrement
 			Default: 5, 0.5, 3, 0.5
 			*/
-			case 2: {
+			case "autoZigzagPlayer": {
 				Player playerComponent = GameObject.Find("Player").GetComponent<Player>();
 				enemyVar[3] += 1f * Time.deltaTime;				// Increase by time, reset when reaching refresh rate time
 				if (enemyVar[3] >= enemyMod[2]) {		// Start immediately after spawning (enemyVar[3] = 1000)
@@ -142,7 +145,7 @@ public class Enemy : MonoBehaviour {
 			mod 4: Max random X
 			mod 5: Max random Y
 			*/
-			case 3: {
+			case "autoRandomXY": {
 				enemyVar[3] += 1f * Time.deltaTime;				// Increase by time, reset when reaching refresh rate time
 				if (enemyVar[3] > enemyMod[2] + enemyVar[4]) {		// Check if Time > Refresh Rate + Refresh Rate Random Gap (enemyVar4)
 					// Update destination position
@@ -160,6 +163,11 @@ public class Enemy : MonoBehaviour {
 				transform.position = Vector2.MoveTowards (gameObject.transform.position, new Vector2 (enemyVar[1], enemyVar[2]), enemyMod[1] * Time.deltaTime);
 			}
 			break;
+			/* 
+			LINKED MOVEMENT
+			mod 0: Next batchID
+			mod 1: Movement speed
+			*/
 
 			/*
 			STRAIGHT LINE
@@ -168,17 +176,17 @@ public class Enemy : MonoBehaviour {
 			Default: 1, 0.1
 			*/
 			// Straight Line: Left to Right
-			case 11: {						
+			case "straightRight": {						
 				transform.position = new Vector2 (transform.position.x + (enemyMod[1] * Time.deltaTime), transform.position.y - (enemyMod[2] * Time.deltaTime));
 				if (transform.position.x > screenEdge)
-					enemyBatch++;			// Switch direction
+					enemyBatch = "straightLeft";			// Switch direction
 			}
 			break;
 			// Straight Line: Right to Left
-			case 12: {
+			case "straightLeft": {
 				transform.position = new Vector2 (transform.position.x - (enemyMod[1] * Time.deltaTime), transform.position.y - (enemyMod[2] * Time.deltaTime));
 				if (transform.position.x < -screenEdge)
-					enemyBatch--;			// Switch direction
+					enemyBatch = "straightRight";			// Switch direction
 			}
 			break;
 
@@ -190,7 +198,7 @@ public class Enemy : MonoBehaviour {
 			Default: 1, 5, 0.5
 			*/
 			// Sin-Wave: Left to Right - Pseudo-Descending
-			case 21: {
+			case "sinRightDes": {
 				enemyVar[1] += (enemyMod[1] * Time.deltaTime);								// increases x through time
 				enemyVar[2] = enemyMod[3] * Mathf.Sin(enemyMod[2] * enemyVar[1]);			// y = a*sin(kx)
 				enemyVar[3] += enemyVar[1];		enemyVar[4] += enemyVar[2];					// Update temporary position
@@ -201,12 +209,12 @@ public class Enemy : MonoBehaviour {
 				if (transform.position.x > screenEdge && transform.position.y < enemyVar[4] - (Mathf.Abs(enemyMod[3])/2)) {
 					enemyVar[1] = 0;	enemyVar[2] = 0;
 					enemyVar[3] = transform.position.x;	enemyVar[4] = transform.position.y;
-					enemyBatch++;
+					enemyBatch = "sinLeftDes";
 				}
 			}
 			break;
 			// Sin-Wave: Right to Left - Pseudo-Descending
-			case 22: {
+			case "sinLeftDes": {
 				enemyVar[1] -= (enemyMod[1] * Time.deltaTime);
 				enemyVar[2] = enemyMod[3] * Mathf.Sin(enemyMod[2] * enemyVar[1]);
 				enemyVar[3] += enemyVar[1];		enemyVar[4] += enemyVar[2];
@@ -216,12 +224,12 @@ public class Enemy : MonoBehaviour {
 				if (transform.position.x < -screenEdge && transform.position.y < enemyVar[4] - (Mathf.Abs(enemyMod[3])/2)) {
 					enemyVar[1] = 0;	enemyVar[2] = 0;
 					enemyVar[3] = transform.position.x;	enemyVar[4] = transform.position.y;
-					enemyBatch--;
+					enemyBatch = "sinRightDes";
 				}
 			}
 			break;
 			// Sin-Wave: Left to Right - Pseudo-Ascending
-			case 23: {
+			case "sinRightAsc": {
 				enemyVar[1] += (enemyMod[1] * Time.deltaTime);
 				enemyVar[2] = enemyMod[3] * Mathf.Sin(enemyMod[2] * enemyVar[1]);			// y = a*sin(kx)
 				enemyVar[3] += enemyVar[1];		enemyVar[4] += enemyVar[2];
@@ -232,12 +240,12 @@ public class Enemy : MonoBehaviour {
 				if (transform.position.x > screenEdge && transform.position.y < enemyVar[4] + (Mathf.Abs(enemyMod[3])/2)) {
 					enemyVar[1] = 0;	enemyVar[2] = 0;
 					enemyVar[3] = transform.position.x;	enemyVar[4] = transform.position.y;
-					enemyBatch++;
+					enemyBatch = "sinLeftAsc";
 				}
 			}
 			break;
 			// Sin-Wave: Right to Left - Pseudo-Ascending
-			case 24: {
+			case "sinLeftAsc": {
 				enemyVar[1] -= (enemyMod[1] * Time.deltaTime);
 				enemyVar[2] = enemyMod[3] * Mathf.Sin(enemyMod[2] * enemyVar[1]);
 				enemyVar[3] += enemyVar[1];		enemyVar[4] += enemyVar[2];
@@ -247,12 +255,12 @@ public class Enemy : MonoBehaviour {
 				if (transform.position.x < -screenEdge && transform.position.y < enemyVar[4] + (Mathf.Abs(enemyMod[3])/2)) {
 					enemyVar[1] = 0;	enemyVar[2] = 0;
 					enemyVar[3] = transform.position.x;	enemyVar[4] = transform.position.y;
-					enemyBatch--;
+					enemyBatch = "sinRightAsc";
 				}
 			}
 			break;
 			// Sin-Wave: Downward
-			case 25: {
+			case "sinDown": {
 				enemyVar[2] -= (enemyMod[1] * Time.deltaTime);
 				enemyVar[1] = enemyMod[3] * Mathf.Sin(enemyMod[2] * enemyVar[2]);			// x = sin(ky)
 				enemyVar[3] += enemyVar[1];		enemyVar[4] += enemyVar[2];
@@ -271,7 +279,7 @@ public class Enemy : MonoBehaviour {
 			Default: 1, -1, 2, 2
 			*/
 			// Curve: Left to Right
-			case 31: {
+			case "curveRight": {
 				enemyVar[1] += (enemyMod[1] * Time.deltaTime);
 				enemyVar[2] = enemyMod[2] * Mathf.Pow(enemyVar[1]/enemyMod[3], enemyMod[4]);		//y = k(x/a)^b
 				enemyVar[3] += enemyVar[1];		enemyVar[4] += enemyVar[2];
@@ -280,7 +288,7 @@ public class Enemy : MonoBehaviour {
 			}
 			break;
 			// Curve: Right to Left
-			case 32: {
+			case "curveLeft": {
 				enemyVar[1] -= (enemyMod[1] * Time.deltaTime);
 				enemyVar[2] = enemyMod[2] * Mathf.Pow(enemyVar[1]/enemyMod[3], enemyMod[4]);		//y = k(x/a)^b
 				enemyVar[3] += enemyVar[1];		enemyVar[4] += enemyVar[2];
