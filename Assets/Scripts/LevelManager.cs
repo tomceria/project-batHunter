@@ -39,8 +39,8 @@ public class LevelManager : MonoBehaviour {
 							break;
 						}
 						case 2: {
-							batchMod[1]=0.5f;	batchMod[2]=2f;	batchMod[3]=1f;	batchMod[4]=5f;	batchMod[5]=5f;
-							spawnBatchCmd ("autoRandomXY", 0, 1, 2f, 3f, 0, 0, batchMod);
+							batchMod[0]=2f;	batchMod[1]=1f;	batchMod[2]=2f;	batchMod[3]=1f;	batchMod[4]=5f;	batchMod[5]=5f;
+							spawnBatchCmd ("linkedToY-autoRandomXY", 0, 1, 1f, 5f, 0, 0, batchMod);
 							gameTimeMark = 100;
 							break;
 						}

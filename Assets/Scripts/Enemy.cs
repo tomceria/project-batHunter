@@ -64,6 +64,7 @@ public class Enemy : MonoBehaviour {
 				enemyVar[4] = 0;					// Refresh rate time gap. Starts as 0 as enemy moves immediately after spawning, update afterward
 				break;
 			}
+
 			// Sin-Wave & Curve:
 			case "sinRightDes":
 			case "sinLeftDes":
@@ -144,6 +145,7 @@ public class Enemy : MonoBehaviour {
 			mod 3: Refresh rate random gap (second)
 			mod 4: Max random X
 			mod 5: Max random Y
+			Default: 1, 2, 1, 5, 5
 			*/
 			case "autoRandomXY": {
 				enemyVar[3] += 1f * Time.deltaTime;				// Increase by time, reset when reaching refresh rate time
@@ -163,11 +165,31 @@ public class Enemy : MonoBehaviour {
 				transform.position = Vector2.MoveTowards (gameObject.transform.position, new Vector2 (enemyVar[1], enemyVar[2]), enemyMod[1] * Time.deltaTime);
 			}
 			break;
+
 			/* 
-			LINKED MOVEMENT
-			mod 0: Next batchID
+			APPROACH FROM EDGE - LINKED WITH "RANDOM MOVEMENT"
+			mod 0: Halt position (on X-axis if Left/Right or Y-axis if Top/Bottom)
 			mod 1: Movement speed
+			mod 2, 3, 4, 5 same as Random movement
 			*/
+			// Approaching from Top / Bottom
+			case "linkedToY-autoRandomXY": {
+				transform.position = Vector2.Lerp (transform.position, new Vector2 (transform.position.x, enemyMod[0]), enemyMod[1] * Time.deltaTime);
+				if (transform.position.y <= (enemyMod[0] + 0.25f)) {
+					enemyBatch = "autoRandomXY";
+					Start();
+				}
+			}
+			break;
+			// Approaching from Left / Right edges
+			case "linkedToX-autoRandomXY": {
+				transform.position = Vector2.Lerp (new Vector2 (transform.position.x, enemyMod[0]), transform.position, enemyMod[1] * Time.deltaTime);
+				if (transform.position.y <= (enemyMod[0] + 0.25f)) {
+					enemyBatch = "autoRandomXY";
+					Start();
+				}
+			}
+			break;
 
 			/*
 			STRAIGHT LINE
