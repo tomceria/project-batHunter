@@ -24,8 +24,8 @@ public class Player : MonoBehaviour {
 		
 		//Player initial stat
 		userInfo.inventory = new WeaponDB.weapon[20];				//Initiating Player's card inventory
-		WeaponDB.getCard(1, ref userInfo, 1, 1);
-		WeaponDB.getCard(2, ref userInfo, 2, 1);
+		WeaponDB.getCard("cone-stick", ref userInfo, 1, 1);
+		WeaponDB.getCard("laser-once", ref userInfo, 2, 1);
 		userInfo.type = 0;
 		userInfo.hp = 100;
 		gameObject.tag = "Player";

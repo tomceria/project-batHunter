@@ -21,7 +21,7 @@ public class Enemy : MonoBehaviour {
 		switch (enemyID) {
 			case 0: {				// Test Enemy
 				userInfo.inventory = new WeaponDB.weapon[20];				//Initiating Enemy's card inventory
-				WeaponDB.getCard(103, ref userInfo, 1, 6);
+				WeaponDB.getCard("enemy-cone-ball-targetPlayer", ref userInfo, 1, 6);
 				userInfo.type = 2;
 				userInfo.hp = 5f;
 				userInfo.barrelPos = new Vector3 (0, -0.2f, 0);
@@ -30,7 +30,7 @@ public class Enemy : MonoBehaviour {
 			}
 			case 1: {				// Test Enemy 2
 				userInfo.inventory = new WeaponDB.weapon[20];
-				WeaponDB.getCard(102, ref userInfo, 1, 8);
+				WeaponDB.getCard("enemy-surround-ball", ref userInfo, 1, 8);
 				userInfo.type = 2;
 				userInfo.hp = 5f;
 				userInfo.barrelPos = new Vector3 (0, 0, 0);

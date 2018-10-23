@@ -17,15 +17,17 @@ public class UserAudioDB : MonoBehaviour {
 		
 	}
 
-	public void playSFX (AudioSource sfxSource, int sfxID) {
+	public void playSFX (AudioSource sfxSource, string sfxID) {
 		switch (sfxID) {
-			case 1:
-			case 101:
-			case 102: {
+			case "cone-stick":
+			case "enemy-cone-stick":
+			case "enemy-surround-ball":
+			case "enemy-cone-ball-targetPlayer":
+			case "enemy-burst-ball-targetPlayer": {
 				sfxSource.clip = ioncannon;
 			}
 			break;
-			case 2: {
+			case "laser-once": {
 				sfxSource.clip = plasmabeam;
 			}
 			break;

@@ -11,7 +11,7 @@ public class WeaponDB : MonoBehaviour {
 	public GameObject smallBall;
 
 	public struct weapon {
-		public int id;
+		public string id;
 		public int type;
 		public int level;
 		public float power;
@@ -35,7 +35,7 @@ public class WeaponDB : MonoBehaviour {
 		
 	}
 
-	public static void getCard (int id, ref Game.info userInfo, int slotID, int cardLevel) {		//Temporary. TODO: Check for empty slot to add card in
+	public static void getCard (string id, ref Game.info userInfo, int slotID, int cardLevel) {		//Temporary. TODO: Check for empty slot to add card in
 		userInfo.inventory[slotID].id = id;										//Assign "int id" to item in slot
 		userInfo.inventory[slotID].level += cardLevel;							//Assign number of card / increment level of card
 
@@ -61,7 +61,7 @@ public class WeaponDB : MonoBehaviour {
 		int baseType=0, baseProjectileFROM=0, baseProjectileTO=0;
 		float basePowerFROM=0, basePowerTO=0, baseSpeedFROM=0, baseSpeedTO=0, baseDelayMaxFROM=0, baseDelayMaxTO=0, baseHeatDesFROM=0, baseHeatDesTO=0, baseHeatAccelBaseFROM=0, baseHeatAccelBaseTO=0;
 		switch (id) {
-			case 1:				// HOLY
+			case "cone-stick":				// HOLY
 				baseType = 0;
 				basePowerFROM = 3;						basePowerTO = 10;
 				baseSpeedFROM = 50;						baseSpeedTO = 50;
@@ -70,7 +70,7 @@ public class WeaponDB : MonoBehaviour {
 				baseHeatDesFROM = 7;					baseHeatDesTO = 5;
 				baseHeatAccelBaseFROM = 0.1f;			baseHeatAccelBaseTO = 0.08f;
 				break;
-			case 2:				// Laser beam
+			case "laser-once":				// Laser beam
 				baseType = 0;
 				basePowerFROM = 8;						basePowerTO = 20;
 				baseSpeedFROM = 0;						baseSpeedTO = 0;
@@ -81,7 +81,7 @@ public class WeaponDB : MonoBehaviour {
 				break;
 			
 			//Enemy weapons
-			case 101:				// Stick-projectile shoot in cone shape (TEMPORARY)
+			case "enemy-cone-stick":				// Stick-projectile shoot in cone shape (TEMPORARY)
 				baseType = 0;
 				basePowerFROM = 3;						basePowerTO = 10;
 				baseSpeedFROM = 20;						baseSpeedTO = 20;
@@ -90,7 +90,7 @@ public class WeaponDB : MonoBehaviour {
 				baseHeatDesFROM = 7;					baseHeatDesTO = 5;
 				baseHeatAccelBaseFROM = 0.1f;			baseHeatAccelBaseTO = 0.08f;
 				break;
-			case 102:				// Ball-projectile shoot in 180/x direction (surrounding)
+			case "enemy-surround-ball":				// Ball-projectile shoot in 180/x direction (surrounding)
 				baseType = 0;
 				basePowerFROM = 3;						basePowerTO = 10;
 				baseSpeedFROM = 10;						baseSpeedTO = 10;
@@ -99,7 +99,16 @@ public class WeaponDB : MonoBehaviour {
 				baseHeatDesFROM = 10;					baseHeatDesTO = 6;
 				baseHeatAccelBaseFROM = 0.25f;			baseHeatAccelBaseTO = 0.1f;
 				break;
-			case 103:				// Ball-projectile shoot in burst - TARGET PLAYER (PLACEHOLDER)
+			case "enemy-cone-ball-targetPlayer":				// Ball-projectile shoot in cone shape - TARGET PLAYER (PLACEHOLDER)
+				baseType = 0;
+				basePowerFROM = 3;						basePowerTO = 10;
+				baseSpeedFROM = 20;						baseSpeedTO = 20;
+				baseProjectileFROM = 1;					baseProjectileTO = 5;
+				baseDelayMaxFROM = 20;					baseDelayMaxTO = 10;
+				baseHeatDesFROM = 7;					baseHeatDesTO = 5;
+				baseHeatAccelBaseFROM = 0.1f;			baseHeatAccelBaseTO = 0.08f;
+				break;
+			case "enemy-burst-ball-targetPlayer":				// Ball-projectile shoot in burst - TARGET PLAYER (PLACEHOLDER)
 				baseType = 0;
 				basePowerFROM = 3;						basePowerTO = 10;
 				baseSpeedFROM = 20;						baseSpeedTO = 20;
@@ -141,26 +150,26 @@ public class WeaponDB : MonoBehaviour {
 
 		//PREFAB SELECT
 		switch (userInfo.inventory[slotID].id) {
-			case 1:
-			case 101: {
+			case "cone-stick":
+			case "enemy-cone-stick": {
 				projectile = longBullet;
 			}
 			break;
-			case 102:
-			case 103:
-			case 104: {
+			case "enemy-surround-ball":
+			case "enemy-cone-ball-targetPlayer":
+			case "enemy-burst-ball-targetPlayer": {
 				projectile = smallBall;
 			}
 			break;
-			case 2: {
+			case "laser-once": {
 				projectile = laser;				//TEMPORARY
 			}
 			break;
 		}
 		// CARD BEHAVIOUR (TODO: Card properties (sprite, etc.) separately)
 		switch (userInfo.inventory[slotID].id) {
-			case 1:
-			case 101: {				// Stick-projectile shoot in cone shape
+			case "cone-stick":
+			case "enemy-cone-stick": {				// Stick-projectile shoot in cone shape
 				int bulletAngel = 5;
 				for (var i = 0; i <= (userInfo.inventory[slotID].projectile-1)*2; i++) {
 					GameObject Bullet = Instantiate(projectile, user.transform.position + userInfo.barrelPos + zDepth, Quaternion.identity) as GameObject;
@@ -173,7 +182,7 @@ public class WeaponDB : MonoBehaviour {
 				}
 				break;
 			}
-			case 2: {				// Laser beam
+			case "laser-once": {				// Laser beam
 				GameObject Beam = Instantiate(projectile, new Vector2(user.transform.position.x, user.transform.position.y + userInfo.barrelPos.y), Quaternion.identity) as GameObject;
 				Beam.transform.rotation = Quaternion.Euler(0, 0, 0 + facedown*180);
 				//TODO: Laser size based on w.projectile
@@ -183,7 +192,7 @@ public class WeaponDB : MonoBehaviour {
 				laserComponent.userType = userInfo.type;								// Transfer user type into Projectile.cs
 				break;
 			}
-			case 102: {				// Ball-projectile shoot in 180/x direction (surrounding)
+			case "enemy-surround-ball": {				// Ball-projectile shoot in 180/x direction (surrounding)
 				int bulletAngel = 180/(userInfo.inventory[slotID].projectile);
 				for (var i = 0; i < userInfo.inventory[slotID].projectile * 2; i++) {
 					GameObject Bullet = Instantiate(projectile, user.transform.position + userInfo.barrelPos + zDepth, Quaternion.identity) as GameObject;
@@ -196,13 +205,13 @@ public class WeaponDB : MonoBehaviour {
 				break;
 			}
 
-			case 103: {				// Ball-projectile shoot in cone shape - TARGET PLAYER (PLACEHOLDER)
+			case "enemy-cone-ball-targetPlayer": {				// Ball-projectile shoot in cone shape - TARGET PLAYER (PLACEHOLDER)
 				int bulletAngel = 5;
 				for (var i = 0; i <= (userInfo.inventory[slotID].projectile-1)*2; i++) {
 					GameObject Bullet = Instantiate(projectile, user.transform.position + userInfo.barrelPos + zDepth, Quaternion.identity) as GameObject;
 					Player playerComponent = GameObject.Find("Player").GetComponent<Player>();
-					float targetPlayerAngle = Vector2.Angle(transform.up, (playerComponent.transform.position - Bullet.transform.position).normalized);
-					//Debug.Log (transform.up + " " + user.transform.position + " " + playerComponent.transform.position + " " + targetPlayerAngle);
+					float targetPlayerAngle = Vector2.SignedAngle(transform.up, (playerComponent.transform.position - Bullet.transform.position).normalized);
+					Debug.Log (transform.up + " " + user.transform.position + " " + playerComponent.transform.position + " " + targetPlayerAngle);
 					Bullet.transform.rotation = Quaternion.Euler(0, 0, user.transform.rotation.z + targetPlayerAngle - (userInfo.inventory[slotID].projectile - 1)*bulletAngel + bulletAngel*i);
 					Projectile bulletComponent = Bullet.GetComponent<Projectile>();			// Get Projectile.cs component
 					//VARIABLE TRANSFER
@@ -213,12 +222,12 @@ public class WeaponDB : MonoBehaviour {
 				break;
 			}
 
-			case 104: {				// Ball-projectile shoot in burst - TARGET PLAYER (PLACEHOLDER)
+			case "enemy-burst-ball-targetPlayer": {				// Ball-projectile shoot in burst - TARGET PLAYER (PLACEHOLDER)
 				int bulletAngel = 5;
 				for (var i = 0; i <= (userInfo.inventory[slotID].projectile-1)*2; i++) {
 					GameObject Bullet = Instantiate(projectile, user.transform.position + userInfo.barrelPos + zDepth, Quaternion.identity) as GameObject;
 					Player playerComponent = GameObject.Find("Player").GetComponent<Player>();
-					float targetPlayerAngle = Vector2.Angle(transform.up, (playerComponent.transform.position - Bullet.transform.position).normalized);
+					float targetPlayerAngle = Vector2.SignedAngle(transform.up, (playerComponent.transform.position - Bullet.transform.position).normalized);
 					//Debug.Log (transform.up + " " + user.transform.position + " " + playerComponent.transform.position + " " + targetPlayerAngle);
 					Bullet.transform.rotation = Quaternion.Euler(0, 0, user.transform.rotation.z + targetPlayerAngle - (userInfo.inventory[slotID].projectile - 1)*bulletAngel + bulletAngel*i + rnd.Next(-5, 5));
 					Projectile bulletComponent = Bullet.GetComponent<Projectile>();			// Get Projectile.cs component
@@ -231,4 +240,5 @@ public class WeaponDB : MonoBehaviour {
 			}
 		}
 	}
+
 }
