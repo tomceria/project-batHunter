@@ -99,6 +99,15 @@ public class WeaponDB : MonoBehaviour {
 				baseHeatDesFROM = 10;					baseHeatDesTO = 6;
 				baseHeatAccelBaseFROM = 0.25f;			baseHeatAccelBaseTO = 0.1f;
 				break;
+			case 103:				// Ball-projectile shoot in burst - TARGET PLAYER (PLACEHOLDER)
+				baseType = 0;
+				basePowerFROM = 3;						basePowerTO = 10;
+				baseSpeedFROM = 20;						baseSpeedTO = 20;
+				baseProjectileFROM = 1;					baseProjectileTO = 5;
+				baseDelayMaxFROM = 20;					baseDelayMaxTO = 10;
+				baseHeatDesFROM = 7;					baseHeatDesTO = 5;
+				baseHeatAccelBaseFROM = 0.1f;			baseHeatAccelBaseTO = 0.08f;
+				break;
 		}
 		userInfo.inventory[slotID].type = baseType;
 		userInfo.inventory[slotID].projectile = ((baseProjectileTO-baseProjectileFROM)*(userInfo.inventory[slotID].level-1)/(10-1))+baseProjectileFROM;
@@ -137,7 +146,9 @@ public class WeaponDB : MonoBehaviour {
 				projectile = longBullet;
 			}
 			break;
-			case 102: {
+			case 102:
+			case 103:
+			case 104: {
 				projectile = smallBall;
 			}
 			break;
@@ -178,6 +189,40 @@ public class WeaponDB : MonoBehaviour {
 					GameObject Bullet = Instantiate(projectile, user.transform.position + userInfo.barrelPos + zDepth, Quaternion.identity) as GameObject;
 					Bullet.transform.rotation = Quaternion.Euler(0, 0, user.transform.rotation.z + bulletAngel*i);
 					Projectile bulletComponent = Bullet.GetComponent<Projectile>();			// Get Projectile.cs component
+					bulletComponent.damage = userInfo.inventory[slotID].power;				// Transfer damage/power data into Projectile.cs
+					bulletComponent.travelSpeed = userInfo.inventory[slotID].speed;			// Transfer speed into Projectile.cs
+					bulletComponent.userType = userInfo.type;								// Transfer user type into Projectile.cs
+				}
+				break;
+			}
+
+			case 103: {				// Ball-projectile shoot in cone shape - TARGET PLAYER (PLACEHOLDER)
+				int bulletAngel = 5;
+				for (var i = 0; i <= (userInfo.inventory[slotID].projectile-1)*2; i++) {
+					GameObject Bullet = Instantiate(projectile, user.transform.position + userInfo.barrelPos + zDepth, Quaternion.identity) as GameObject;
+					Player playerComponent = GameObject.Find("Player").GetComponent<Player>();
+					float targetPlayerAngle = Vector2.Angle(transform.up, (playerComponent.transform.position - Bullet.transform.position).normalized);
+					//Debug.Log (transform.up + " " + user.transform.position + " " + playerComponent.transform.position + " " + targetPlayerAngle);
+					Bullet.transform.rotation = Quaternion.Euler(0, 0, user.transform.rotation.z + targetPlayerAngle - (userInfo.inventory[slotID].projectile - 1)*bulletAngel + bulletAngel*i);
+					Projectile bulletComponent = Bullet.GetComponent<Projectile>();			// Get Projectile.cs component
+					//VARIABLE TRANSFER
+					bulletComponent.damage = userInfo.inventory[slotID].power;				// Transfer damage/power data into Projectile.cs
+					bulletComponent.travelSpeed = userInfo.inventory[slotID].speed;			// Transfer speed into Projectile.cs
+					bulletComponent.userType = userInfo.type;								// Transfer user type into Projectile.cs
+				}
+				break;
+			}
+
+			case 104: {				// Ball-projectile shoot in burst - TARGET PLAYER (PLACEHOLDER)
+				int bulletAngel = 5;
+				for (var i = 0; i <= (userInfo.inventory[slotID].projectile-1)*2; i++) {
+					GameObject Bullet = Instantiate(projectile, user.transform.position + userInfo.barrelPos + zDepth, Quaternion.identity) as GameObject;
+					Player playerComponent = GameObject.Find("Player").GetComponent<Player>();
+					float targetPlayerAngle = Vector2.Angle(transform.up, (playerComponent.transform.position - Bullet.transform.position).normalized);
+					//Debug.Log (transform.up + " " + user.transform.position + " " + playerComponent.transform.position + " " + targetPlayerAngle);
+					Bullet.transform.rotation = Quaternion.Euler(0, 0, user.transform.rotation.z + targetPlayerAngle - (userInfo.inventory[slotID].projectile - 1)*bulletAngel + bulletAngel*i + rnd.Next(-5, 5));
+					Projectile bulletComponent = Bullet.GetComponent<Projectile>();			// Get Projectile.cs component
+					//VARIABLE TRANSFER
 					bulletComponent.damage = userInfo.inventory[slotID].power;				// Transfer damage/power data into Projectile.cs
 					bulletComponent.travelSpeed = userInfo.inventory[slotID].speed;			// Transfer speed into Projectile.cs
 					bulletComponent.userType = userInfo.type;								// Transfer user type into Projectile.cs

@@ -1,13 +1,16 @@
 ﻿using UnityEngine;
+using System;
 using System.Collections;
 
 public class Projectile : MonoBehaviour {
 
     public Rigidbody2D projectileRigid;
+    private System.Random rnd = new System.Random();
     private float accelerate;
     public float damage;            // Receive variable from WeaponDB
     public float userType;          // Receive variable from WeaponDB
     public float travelSpeed;       // Receive variable from WeaponDB
+
     //private static int ProjectileweaponLevel;
 
 
@@ -15,7 +18,7 @@ public class Projectile : MonoBehaviour {
     void Start () {
         accelerate = 10f;
         //WEAPON INITIAL PROPERTIES
-        gameObject.GetComponent<Rigidbody2D>().AddForce(transform.up * travelSpeed * accelerate);
+        gameObject.GetComponent<Rigidbody2D>().AddForce(transform.up * travelSpeed * accelerate);       
     }
 	
 	// Update is called once per frame
