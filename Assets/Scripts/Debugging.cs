@@ -28,6 +28,7 @@ public class Debugging : MonoBehaviour {
 		"\nScreenWidth: " + Screen.width + 
 		"\nCamera X: " + CameraObj.transform.position.x + 
 		"\n" +
+		"\nHP: " + player.userInfo.hp +
 		"\nHeat: " + player.userInfo.heat +
 		"\nCard in use: " + player.userInfo.currentCard + 
 		"\nOverheat State: " + player.userInfo.overheatState +

@@ -102,7 +102,7 @@ public class WeaponDB : MonoBehaviour {
 			case "enemy-cone-ball-targetPlayer":				// Ball-projectile shoot in cone shape - TARGET PLAYER (PLACEHOLDER)
 				baseType = 0;
 				basePowerFROM = 3;						basePowerTO = 10;
-				baseSpeedFROM = 20;						baseSpeedTO = 20;
+				baseSpeedFROM = 5;						baseSpeedTO = 5;
 				baseProjectileFROM = 1;					baseProjectileTO = 5;
 				baseDelayMaxFROM = 20;					baseDelayMaxTO = 10;
 				baseHeatDesFROM = 7;					baseHeatDesTO = 5;
@@ -111,7 +111,7 @@ public class WeaponDB : MonoBehaviour {
 			case "enemy-burst-ball-targetPlayer":				// Ball-projectile shoot in burst - TARGET PLAYER (PLACEHOLDER)
 				baseType = 0;
 				basePowerFROM = 3;						basePowerTO = 10;
-				baseSpeedFROM = 20;						baseSpeedTO = 20;
+				baseSpeedFROM = 5;						baseSpeedTO = 5;
 				baseProjectileFROM = 1;					baseProjectileTO = 5;
 				baseDelayMaxFROM = 20;					baseDelayMaxTO = 10;
 				baseHeatDesFROM = 7;					baseHeatDesTO = 5;
@@ -211,7 +211,6 @@ public class WeaponDB : MonoBehaviour {
 					GameObject Bullet = Instantiate(projectile, user.transform.position + userInfo.barrelPos + zDepth, Quaternion.identity) as GameObject;
 					Player playerComponent = GameObject.Find("Player").GetComponent<Player>();
 					float targetPlayerAngle = Vector2.SignedAngle(transform.up, (playerComponent.transform.position - Bullet.transform.position).normalized);
-					Debug.Log (transform.up + " " + user.transform.position + " " + playerComponent.transform.position + " " + targetPlayerAngle);
 					Bullet.transform.rotation = Quaternion.Euler(0, 0, user.transform.rotation.z + targetPlayerAngle - (userInfo.inventory[slotID].projectile - 1)*bulletAngel + bulletAngel*i);
 					Projectile bulletComponent = Bullet.GetComponent<Projectile>();			// Get Projectile.cs component
 					//VARIABLE TRANSFER
@@ -228,7 +227,6 @@ public class WeaponDB : MonoBehaviour {
 					GameObject Bullet = Instantiate(projectile, user.transform.position + userInfo.barrelPos + zDepth, Quaternion.identity) as GameObject;
 					Player playerComponent = GameObject.Find("Player").GetComponent<Player>();
 					float targetPlayerAngle = Vector2.SignedAngle(transform.up, (playerComponent.transform.position - Bullet.transform.position).normalized);
-					//Debug.Log (transform.up + " " + user.transform.position + " " + playerComponent.transform.position + " " + targetPlayerAngle);
 					Bullet.transform.rotation = Quaternion.Euler(0, 0, user.transform.rotation.z + targetPlayerAngle - (userInfo.inventory[slotID].projectile - 1)*bulletAngel + bulletAngel*i + rnd.Next(-5, 5));
 					Projectile bulletComponent = Bullet.GetComponent<Projectile>();			// Get Projectile.cs component
 					//VARIABLE TRANSFER

@@ -18,30 +18,70 @@ public class Enemy : MonoBehaviour {
 	void Start () {
 
 		// Enemy properties
+		userInfo.type = 2;
+		userInfo.inventory = new WeaponDB.weapon[20];				//Initiating Enemy's card inventory
+		gameObject.tag = "Enemy";
+		userInfo.currentCard = 1;				//TEMP
+		userInfo.heatMax = 100;
+		//startFirePattern (int slotID, int gap, int randomGap, int continuous, int continuousGap, int randomContinuous)
 		switch (enemyID) {
-			case 0: {				// Test Enemy
-				userInfo.inventory = new WeaponDB.weapon[20];				//Initiating Enemy's card inventory
-				WeaponDB.getCard("enemy-cone-ball-targetPlayer", ref userInfo, 1, 6);
-				userInfo.type = 2;
+			// TODO: all cardLevel = stageLevel
+			case 0: {				// Tame Bat
+				WeaponDB.getCard("enemy-cone-stick", ref userInfo, 1, 1);
 				userInfo.hp = 5f;
 				userInfo.barrelPos = new Vector3 (0, -0.2f, 0);
 				StartCoroutine (startFirePattern (1, 1000, 7000, 1, 0, 0));
 				break;
 			}
-			case 1: {				// Test Enemy 2
-				userInfo.inventory = new WeaponDB.weapon[20];
+			case 1: {				// Heat-Emit Bat
 				WeaponDB.getCard("enemy-surround-ball", ref userInfo, 1, 8);
-				userInfo.type = 2;
 				userInfo.hp = 5f;
 				userInfo.barrelPos = new Vector3 (0, 0, 0);
 				gameObject.GetComponent<SpriteRenderer>().color = Color.red;
 				StartCoroutine (startFirePattern (1, 1000, 10000, 3, 100, 0));
 				break;
 			}
+			case 2: {				// Accurate Bat
+				WeaponDB.getCard("enemy-cone-ball-targetPlayer", ref userInfo, 1, 1);
+				userInfo.hp = 5f;
+				userInfo.barrelPos = new Vector3 (0, -0.2f, 0);
+				gameObject.GetComponent<SpriteRenderer>().color = Color.blue;
+				StartCoroutine (startFirePattern (1, 1000, 7000, 1, 0, 0));
+				break;
+			}
+			case 3: {				// Bursty Bat
+				WeaponDB.getCard("enemy-burst-ball-targetPlayer", ref userInfo, 1, 6);
+				userInfo.hp = 5f;
+				userInfo.barrelPos = new Vector3 (0, -0.2f, 0);
+				gameObject.GetComponent<SpriteRenderer>().color = Color.yellow;
+				StartCoroutine (startFirePattern (1, 5000, 7000, 1, 0, 0));
+				break;
+			}
+			case 4: {				// Random3 Bat
+				WeaponDB.getCard("enemy-burst-ball-targetPlayer", ref userInfo, 1, 4);
+				userInfo.hp = 3f;
+				userInfo.barrelPos = new Vector3 (0, -0.2f, 0);
+				gameObject.GetComponent<SpriteRenderer>().color = Color.green;
+				StartCoroutine (startFirePattern (1, 2000, 8000, 2, 250, 0));
+				break;
+			}
+			case 5: {				// Tanky annoying bat
+				WeaponDB.getCard("enemy-burst-ball-targetPlayer", ref userInfo, 1, 6);
+				userInfo.hp = 20f;
+				userInfo.barrelPos = new Vector3 (0, -0.2f, 0);
+				gameObject.GetComponent<SpriteRenderer>().color = Color.magenta;
+				StartCoroutine (startFirePattern (1, 3000, 0, 3, 250, 0));
+				break;
+			}
+			case 6: {				// Surround bat
+				WeaponDB.getCard("enemy-surround-ball", ref userInfo, 1, 6);
+				userInfo.hp = 3f;
+				userInfo.barrelPos = new Vector3 (0, -0.2f, 0);
+				gameObject.GetComponent<SpriteRenderer>().color = Color.cyan;
+				StartCoroutine (startFirePattern (1, 3000, 7000, 1, 0, 0));
+				break;
+			}
 		}
-		gameObject.tag = "Enemy";
-		userInfo.currentCard = 1;				//TEMP
-		userInfo.heatMax = 100;
 		//userInfo.heat = userInfo.heatMax;
 		//
 
@@ -297,7 +337,7 @@ public class Enemy : MonoBehaviour {
 			mod 1: Movement speed
 			mod 2: Vertical direction (k) (-1 or 1 => Down or Up)
 			mod 3: Curve point (a)
-			mod 4: Curve power (b) (odd number)
+			mod 4: Curve power (b) (even number)
 			Default: 1, -1, 2, 2
 			*/
 			// Curve: Left to Right
