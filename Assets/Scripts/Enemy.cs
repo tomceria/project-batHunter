@@ -8,15 +8,20 @@ public class Enemy : MonoBehaviour {
 	public Game.info userInfo;				//Using info struct from Game.cs
 
 	public float screenEdge = 4.5f;
-	public int enemyID;
+	public string enemyID;
 	public string enemyBatch;
 	private System.Random rnd = new System.Random();
 	public float[] enemyMod = new float[10];		//Value determined by EnemySpawner to change batch's behaviour
 	public float[] enemyVar = new float[10];		//Value changing throughout the process for batch's functions
+	public static int enemyCount = 0;
 
 	// Use this for initialization
+	
 	void Start () {
-
+		enemyCount++;
+		Initiate ();
+	}
+	void Initiate () {
 		// Enemy properties
 		userInfo.type = 2;
 		userInfo.inventory = new WeaponDB.weapon[20];				//Initiating Enemy's card inventory
@@ -26,14 +31,14 @@ public class Enemy : MonoBehaviour {
 		//startFirePattern (int slotID, int gap, int randomGap, int continuous, int continuousGap, int randomContinuous)
 		switch (enemyID) {
 			// TODO: all cardLevel = stageLevel
-			case 0: {				// Tame Bat
+			case "tameBat": {				// Tame Bat
 				WeaponDB.getCard("enemy-cone-stick", ref userInfo, 1, 1);
 				userInfo.hp = 5f;
 				userInfo.barrelPos = new Vector3 (0, -0.2f, 0);
 				StartCoroutine (startFirePattern (1, 1000, 7000, 1, 0, 0));
 				break;
 			}
-			case 1: {				// Heat-Emit Bat
+			case "heatemitBat": {				// Heat-Emit Bat
 				WeaponDB.getCard("enemy-surround-ball", ref userInfo, 1, 8);
 				userInfo.hp = 5f;
 				userInfo.barrelPos = new Vector3 (0, 0, 0);
@@ -41,7 +46,7 @@ public class Enemy : MonoBehaviour {
 				StartCoroutine (startFirePattern (1, 1000, 10000, 3, 100, 0));
 				break;
 			}
-			case 2: {				// Accurate Bat
+			case "accurateBat": {				// Accurate Bat
 				WeaponDB.getCard("enemy-cone-ball-targetPlayer", ref userInfo, 1, 1);
 				userInfo.hp = 5f;
 				userInfo.barrelPos = new Vector3 (0, -0.2f, 0);
@@ -49,7 +54,7 @@ public class Enemy : MonoBehaviour {
 				StartCoroutine (startFirePattern (1, 1000, 7000, 1, 0, 0));
 				break;
 			}
-			case 3: {				// Bursty Bat
+			case "burstyBat": {				// Bursty Bat
 				WeaponDB.getCard("enemy-burst-ball-targetPlayer", ref userInfo, 1, 6);
 				userInfo.hp = 5f;
 				userInfo.barrelPos = new Vector3 (0, -0.2f, 0);
@@ -57,7 +62,7 @@ public class Enemy : MonoBehaviour {
 				StartCoroutine (startFirePattern (1, 5000, 7000, 1, 0, 0));
 				break;
 			}
-			case 4: {				// Random3 Bat
+			case "random3Bat": {				// Random3 Bat
 				WeaponDB.getCard("enemy-burst-ball-targetPlayer", ref userInfo, 1, 4);
 				userInfo.hp = 3f;
 				userInfo.barrelPos = new Vector3 (0, -0.2f, 0);
@@ -65,7 +70,7 @@ public class Enemy : MonoBehaviour {
 				StartCoroutine (startFirePattern (1, 2000, 8000, 2, 250, 0));
 				break;
 			}
-			case 5: {				// Tanky annoying bat
+			case "tankyannoyingBat": {				// Tanky annoying bat
 				WeaponDB.getCard("enemy-burst-ball-targetPlayer", ref userInfo, 1, 6);
 				userInfo.hp = 20f;
 				userInfo.barrelPos = new Vector3 (0, -0.2f, 0);
@@ -73,7 +78,7 @@ public class Enemy : MonoBehaviour {
 				StartCoroutine (startFirePattern (1, 3000, 0, 3, 250, 0));
 				break;
 			}
-			case 6: {				// Surround bat
+			case "surroundBat": {				// Surround bat
 				WeaponDB.getCard("enemy-surround-ball", ref userInfo, 1, 6);
 				userInfo.hp = 3f;
 				userInfo.barrelPos = new Vector3 (0, -0.2f, 0);
@@ -217,7 +222,7 @@ public class Enemy : MonoBehaviour {
 				transform.position = Vector2.Lerp (transform.position, new Vector2 (transform.position.x, enemyMod[0]), enemyMod[1] * Time.deltaTime);
 				if (transform.position.y <= (enemyMod[0] + 0.25f)) {
 					enemyBatch = "autoRandomXY";
-					Start();
+					Initiate();
 				}
 			}
 			break;
@@ -226,7 +231,7 @@ public class Enemy : MonoBehaviour {
 				transform.position = Vector2.Lerp (new Vector2 (transform.position.x, enemyMod[0]), transform.position, enemyMod[1] * Time.deltaTime);
 				if (transform.position.y <= (enemyMod[0] + 0.25f)) {
 					enemyBatch = "autoRandomXY";
-					Start();
+					Initiate();
 				}
 			}
 			break;
@@ -368,6 +373,8 @@ public class Enemy : MonoBehaviour {
 	}
 
 	public void EnemyDie () {
+		enemyCount--;
+		
 		userInfo.hp = 0;
 		Destroy(gameObject);
 	}

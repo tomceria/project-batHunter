@@ -25,6 +25,7 @@ public class Debugging : MonoBehaviour {
 		"\nX: " + Player.playerPositionX + 
 		"\nY: " + Player.playerPositionY +
 		"\nGame Time: " + Math.Round(LevelManager.gameTime,3) + 
+		"\nEnemy Count: " + Enemy.enemyCount + 
 		"\nScreenWidth: " + Screen.width + 
 		"\nCamera X: " + CameraObj.transform.position.x + 
 		"\n" +
