@@ -16,6 +16,9 @@ public class ModuleHUD : MonoBehaviour {
 	void Update () {
 		Player player = GameObject.Find("Player").GetComponent<Player>();				//Get Player.userInfo
 		selfbar.fillAmount = (player.userInfo.heat / player.userInfo.heatMax);
-	
+		if (player.userInfo.weakShot == 0)
+			selfbar.color = Color.green;
+		else
+			selfbar.color = Color.red;
 	}
 }

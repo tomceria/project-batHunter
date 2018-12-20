@@ -80,7 +80,7 @@ public class Enemy : MonoBehaviour {
 			}
 			case "surroundBat": {				// Surround bat
 				WeaponDB.getCard("enemy-surround-ball", ref userInfo, 1, 6);
-				userInfo.hp = 3f;
+				userInfo.hp = 5f;
 				userInfo.barrelPos = new Vector3 (0, -0.2f, 0);
 				gameObject.GetComponent<SpriteRenderer>().color = Color.cyan;
 				StartCoroutine (startFirePattern (1, 3000, 7000, 1, 0, 0));

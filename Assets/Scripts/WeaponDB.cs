@@ -66,7 +66,7 @@ public class WeaponDB : MonoBehaviour {
 				basePowerFROM = 3;						basePowerTO = 10;
 				baseSpeedFROM = 50;						baseSpeedTO = 50;
 				baseProjectileFROM = 1;					baseProjectileTO = 5;
-				baseDelayMaxFROM = 20;					baseDelayMaxTO = 10;
+				baseDelayMaxFROM = 18;					baseDelayMaxTO = 12;
 				baseHeatDesFROM = 7;					baseHeatDesTO = 5;
 				baseHeatAccelBaseFROM = 0.1f;			baseHeatAccelBaseTO = 0.08f;
 				break;
@@ -144,7 +144,7 @@ public class WeaponDB : MonoBehaviour {
 		System.Random rnd = new System.Random();			// Randomizing angel for Unconcentrating Shots
 		Vector3 zDepth = new Vector3 (0, 0, -1);			// In 3D space, projectile stay on top of player and enemies in order to reflect light
 
-		if (userInfo.heat < userInfo.inventory[slotID].heatDes + 1) {
+		if (userInfo.weakShot == 1) {
 			unconcentrate = 1;
 		}
 

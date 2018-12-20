@@ -98,8 +98,8 @@ public class LevelManager : MonoBehaviour {
 							break;
 						}
 						case 4: {
-							batchMod[1]=2f;	batchMod[2]=0.1f;
-							spawnBatchCmd ("straightLeft", "surroundBat", 30, 4.5f, 3f, 0.5f, 0, batchMod);
+							batchMod[1]=4f;	batchMod[2]=0.1f;
+							spawnBatchCmd ("straightLeft", "surroundBat", 10, 4.5f, 3f, 0.5f, 0, batchMod);
 							gameTimeMark = 30;
 							break;
 						}

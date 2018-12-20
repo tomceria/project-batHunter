@@ -13,6 +13,7 @@ public class Game : MonoBehaviour {
 		public int currentCard;					//ID of current card in inventory
 		public int overheatState;
 		public Vector3 barrelPos;				//Weapon's barrel position
+		public int weakShot;
 	}
 
 	// Use this for initialization

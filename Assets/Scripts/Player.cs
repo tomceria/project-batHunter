@@ -30,9 +30,10 @@ public class Player : MonoBehaviour {
 		userInfo.hp = 100;
 		gameObject.tag = "Player";
 		userInfo.currentCard = 1;
-		userInfo.heatMax = 100;
+		userInfo.heatMax = 200;
 		userInfo.heat = userInfo.heatMax;
 		userInfo.barrelPos = new Vector3 (0, 0.25f, 0);
+		userInfo.weakShot = 0;
 		
     }
 
@@ -57,7 +58,7 @@ public class Player : MonoBehaviour {
 
         //PROJECTILE FIRING (HOLDING)
 		if (firingState == 1) {
-			if (userInfo.inventory[userInfo.currentCard].delay <= 0 && userInfo.overheatState == 0 && userInfo.heat > userInfo.inventory[userInfo.currentCard].heatDes) {
+			if (userInfo.inventory[userInfo.currentCard].delay <= 0 && userInfo.overheatState == 0 && (userInfo.weakShot == 0 || (userInfo.weakShot == 1 && userInfo.heat >= userInfo.inventory[userInfo.currentCard].heatDes))) {
 				WeaponDB weaponDB = GameObject.Find("GameMaster").GetComponent<WeaponDB>();			//get components from the "WeaponDB" script in the GameObject "GameMaster"
 				weaponDB.useCard (ref userInfo, userInfo.currentCard, gameObject);
 				//WEAPON OVERHEAT TRIGGER
@@ -95,15 +96,27 @@ public class Player : MonoBehaviour {
 		//
 
 		//UPDATE PER FRAMES: WEAPON COOLDOWN (OVERHEAT SYSTEM)
-		userInfo.heat += 15 *Time.deltaTime;
+		if (firingState==0 || userInfo.weakShot==1)
+			userInfo.heat += 15 *Time.deltaTime;
 		if (userInfo.heat > userInfo.heatMax)	
 			userInfo.heat = userInfo.heatMax;
+		//
+
+		//UPDATE PER FRAMES: WEAKSHOT checked
+		if (userInfo.heat > userInfo.inventory[userInfo.currentCard].heatDes + 1) {
+			userInfo.weakShot = 0;
+		}
+		else if (userInfo.heat <= 0)
+			userInfo.weakShot = 1;
 		//
 	
 	}
 
 	public void OnFire() {
-		firingState = 1;
+		if (userInfo.heat <= 0)
+			firingState = 0;
+		else
+			firingState = 1;
 	}
 
 	public void OffFire() {
